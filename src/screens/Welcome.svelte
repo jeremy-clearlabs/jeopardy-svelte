@@ -2,48 +2,23 @@
   import { createEventDispatcher } from 'svelte';
   const dispatch = createEventDispatcher();
   let selected = false;
-  const select = (category) => {
+
+  const start = () => {
     selected = true;
-    dispatch('select', { category });
+    dispatch('start');
   };
-  const categories = [
-    { slug: 'actors', label: 'Actors' },
-    { slug: 'athletes', label: 'Athletes' },
-    { slug: 'comedians', label: 'Comedians' },
-    { slug: 'creators', label: 'Creators' },
-    { slug: 'models', label: 'Models' },
-    { slug: 'musicians', label: 'Musicians' },
-    { slug: 'reality-tv', label: 'Reality TV' },
-  ];
 </script>
 
 <style>
   h1 {
-    color: #ff3e00;
+    color: var(--jeopardy-gray);
     text-transform: uppercase;
+    font-family: 'Fjalla One', sans-serif;
     font-size: min(12vw, 4em);
-    font-weight: 100;
+    font-weight: bold;
     margin: 0 0 0.5em 0;
   }
-  p {
-    max-width: 24em;
-    margin: 0 auto 1em auto;
-  }
-  .logo {
-    display: inline-block;
-    background: url(/icons/compare.svg) 50% 50% no-repeat;
-    background-size: 100% 100%;
-    width: 0.8em;
-    top: 0.05em;
-    transform: scale(1.4);
-    left: 0.02em;
-    text-indent: -9999px;
-  }
-  .categories {
-    width: 100%;
-    max-width: 26em;
-    margin: 0 auto;
-  }
+
   button {
     padding: 1em 1em;
     display: block;
@@ -54,29 +29,12 @@
     button {
       display: inline;
       margin: 0 0.2em 0.4em 0.2em;
-      width: auto;
     }
   }
 </style>
 
 <header>
-  <h1>CameoP<span class="logo">a</span>rison</h1>
-
-  <p>
-    On
-    <a href="https://cameo.com">cameo.com</a>, you can buy personalised video
-    clips from everyone from Lindsay Lohan to Ice T.
-  </p>
-
-  <p>But who commands the highest price?</p>
+  <h1>Jeopardy!</h1>
 </header>
 
-<p>Pick a category to play a game:</p>
-
-<div class="categories">
-  {#each categories as category}
-    <button
-      disabled={selected}
-      on:click={() => select(category)}>{category.label}</button>
-  {/each}
-</div>
+<button on:click={() => start()} disabled={selected}>Start the game!</button>

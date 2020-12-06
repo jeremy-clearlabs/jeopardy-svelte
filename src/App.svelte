@@ -7,9 +7,9 @@
   let celebs_promise;
   let state = 'welcome'; // 'welcome' or 'playing'
   let selection;
-  const start = async (e) => {
-    const { celebs, lookup } = await celebs_promise;
-    selection = select(celebs, lookup, e.detail.category.slug);
+  const startGame = async (e) => {
+    // const { celebs, lookup } = await celebs_promise;
+    // selection = select(celebs, lookup, e.detail.category.slug);
     state = 'playing';
   };
   const load_celebs = async () => {
@@ -41,7 +41,7 @@
 </script>
 
 <style>
-  main {
+  /* main {
     text-align: center;
     padding: 1em;
     max-width: 800px;
@@ -50,13 +50,13 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-  }
+  } */
 </style>
 
 <main>
   {#if state === 'welcome'}
-    <Welcome on:select={start} />
+    <Welcome on:start={startGame} />
   {:else if state === 'playing'}
-    <Game {selection} on:restart={() => (state = 'welcome')} />
+    <Game on:restart={() => (state = 'welcome')} />
   {/if}
 </main>
