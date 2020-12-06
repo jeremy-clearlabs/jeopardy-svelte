@@ -1,7 +1,9 @@
 <script>
+  import { createEventDispatcher } from 'svelte';
   import Card from '../components/Card.svelte';
-  import { sleep } from '../utils.js';
+  import { sleep, pick_random } from '../utils.js';
   export let selection;
+  const dispatch = createEventDispatcher();
   const load_details = async (celeb) => {
     const res = await fetch(
       `https://cameo-explorer.netlify.app/celebs/${celeb.id}.json`
@@ -12,7 +14,17 @@
     Promise.all([load_details(round.a), load_details(round.b)])
   );
   const results = Array(selection.length);
+  $: score = results.filter((x) => x === 'right').length;
   let last_result;
+  let done = false;
+  const pick_message = (p) => {
+    if (p <= 0.2) return pick_random([`Oof.`, `Better luck next time?`]);
+    if (p <= 0.5) return pick_random([`I've seen worse`, `Keep trying!`]);
+    if (p <= 0.8)
+      return pick_random([`Yeah!`, `Not bad. Practice makes perfect`]);
+    if (p < 1) return pick_random([`Impressive.`]);
+    return pick_random([`Flawless victory`, `Top marks`]);
+  };
   const submit = async (a, b, sign) => {
     last_result = Math.sign(a.price - b.price) === sign ? 'right' : 'wrong';
     await sleep(1500);
@@ -21,7 +33,7 @@
     if (i < selection.length - 1) {
       i += 1;
     } else {
-      // TODO end the game
+      done = true;
     }
   };
   let i = 0;
@@ -87,6 +99,21 @@
     left: 0;
     top: 0;
   }
+  .done {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .done strong {
+    font-size: 6em;
+    font-weight: 700;
+  }
   @media (min-width: 640px) {
     .game {
       max-width: 100%;
@@ -109,25 +136,41 @@
 </header>
 
 <div class="game-container">
-  {#await promises[i] then [a, b]}
-    <div class="game">
-      <div class="card-container">
-        <Card celeb={a} on:select={() => submit(a, b, 1)} />
-      </div>
-
-      <div>
-        <button class="same" on:click={() => submit(a, b, 0)}>
-          same price
-        </button>
-      </div>
-
-      <div class="card-container">
-        <Card celeb={b} on:select={() => submit(a, b, -1)} />
-      </div>
+  {#if done}
+    <div class="done">
+      <strong>{score}/{results.length}</strong>
+      <p>{pick_message(score / results.length)}</p>
+      <button on:click={() => dispatch('restart')}>Back to main screen</button>
     </div>
-  {:catch}
-    <p class="error">Oops! Failed to load data</p>
-  {/await}
+  {:else}
+    {#await promises[i] then [a, b]}
+      <div class="game">
+        <div class="card-container">
+          <Card
+            celeb={a}
+            on:select={() => submit(a, b, 1)}
+            showprice={!!last_result}
+            winner={a.price >= b.price} />
+        </div>
+
+        <div>
+          <button class="same" on:click={() => submit(a, b, 0)}>
+            same price
+          </button>
+        </div>
+
+        <div class="card-container">
+          <Card
+            celeb={b}
+            on:select={() => submit(a, b, -1)}
+            showprice={!!last_result}
+            winner={b.price >= a.price} />
+        </div>
+      </div>
+    {:catch}
+      <p class="error">Oops! Failed to load data</p>
+    {/await}
+  {/if}
 </div>
 
 {#if last_result}

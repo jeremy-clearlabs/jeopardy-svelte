@@ -55,6 +55,9 @@ var app = (function () {
     function space() {
         return text(' ');
     }
+    function empty() {
+        return text('');
+    }
     function listen(node, event, handler, options) {
         node.addEventListener(event, handler, options);
         return () => node.removeEventListener(event, handler, options);
@@ -1024,16 +1027,169 @@ var app = (function () {
 
     function get_each_context$1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[10] = list[i];
+    	child_ctx[15] = list[i];
     	return child_ctx;
     }
 
     function get_then_context(ctx) {
-    	ctx[13] = ctx[15][0];
-    	ctx[14] = ctx[15][1];
+    	ctx[18] = ctx[20][0];
+    	ctx[19] = ctx[20][1];
     }
 
-    // (128:2) {:catch}
+    // (145:2) {:else}
+    function create_else_block(ctx) {
+    	let await_block_anchor;
+    	let promise;
+    	let current;
+
+    	let info = {
+    		ctx,
+    		current: null,
+    		token: null,
+    		hasCatch: true,
+    		pending: create_pending_block,
+    		then: create_then_block,
+    		catch: create_catch_block,
+    		value: 20,
+    		blocks: [,,,]
+    	};
+
+    	handle_promise(promise = /*promises*/ ctx[6][/*i*/ ctx[3]], info);
+
+    	const block = {
+    		c: function create() {
+    			await_block_anchor = empty();
+    			info.block.c();
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, await_block_anchor, anchor);
+    			info.block.m(target, info.anchor = anchor);
+    			info.mount = () => await_block_anchor.parentNode;
+    			info.anchor = await_block_anchor;
+    			current = true;
+    		},
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+    			info.ctx = ctx;
+
+    			if (dirty & /*i*/ 8 && promise !== (promise = /*promises*/ ctx[6][/*i*/ ctx[3]]) && handle_promise(promise, info)) ; else {
+    				const child_ctx = ctx.slice();
+    				child_ctx[20] = info.resolved;
+    				info.block.p(child_ctx, dirty);
+    			}
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(info.block);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			for (let i = 0; i < 3; i += 1) {
+    				const block = info.blocks[i];
+    				transition_out(block);
+    			}
+
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(await_block_anchor);
+    			info.block.d(detaching);
+    			info.token = null;
+    			info = null;
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_else_block.name,
+    		type: "else",
+    		source: "(145:2) {:else}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (139:2) {#if done}
+    function create_if_block_2(ctx) {
+    	let div;
+    	let strong;
+    	let t0;
+    	let t1;
+    	let t2_value = /*results*/ ctx[0].length + "";
+    	let t2;
+    	let t3;
+    	let p;
+    	let t4_value = /*pick_message*/ ctx[7](/*score*/ ctx[4] / /*results*/ ctx[0].length) + "";
+    	let t4;
+    	let t5;
+    	let button;
+    	let mounted;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+    			strong = element("strong");
+    			t0 = text(/*score*/ ctx[4]);
+    			t1 = text("/");
+    			t2 = text(t2_value);
+    			t3 = space();
+    			p = element("p");
+    			t4 = text(t4_value);
+    			t5 = space();
+    			button = element("button");
+    			button.textContent = "Back to main screen";
+    			attr_dev(strong, "class", "svelte-1gup7pl");
+    			add_location(strong, file$2, 140, 6, 3162);
+    			add_location(p, file$2, 141, 6, 3210);
+    			add_location(button, file$2, 142, 6, 3262);
+    			attr_dev(div, "class", "done svelte-1gup7pl");
+    			add_location(div, file$2, 139, 4, 3137);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			append_dev(div, strong);
+    			append_dev(strong, t0);
+    			append_dev(strong, t1);
+    			append_dev(strong, t2);
+    			append_dev(div, t3);
+    			append_dev(div, p);
+    			append_dev(p, t4);
+    			append_dev(div, t5);
+    			append_dev(div, button);
+
+    			if (!mounted) {
+    				dispose = listen_dev(button, "click", /*click_handler*/ ctx[10], false, false, false);
+    				mounted = true;
+    			}
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*score*/ 16) set_data_dev(t0, /*score*/ ctx[4]);
+    			if (dirty & /*results*/ 1 && t2_value !== (t2_value = /*results*/ ctx[0].length + "")) set_data_dev(t2, t2_value);
+    			if (dirty & /*score, results*/ 17 && t4_value !== (t4_value = /*pick_message*/ ctx[7](/*score*/ ctx[4] / /*results*/ ctx[0].length) + "")) set_data_dev(t4, t4_value);
+    		},
+    		i: noop,
+    		o: noop,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_2.name,
+    		type: "if",
+    		source: "(139:2) {#if done}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (170:4) {:catch}
     function create_catch_block(ctx) {
     	let p;
 
@@ -1041,8 +1197,8 @@ var app = (function () {
     		c: function create() {
     			p = element("p");
     			p.textContent = "Oops! Failed to load data";
-    			attr_dev(p, "class", "error svelte-dpqtkk");
-    			add_location(p, file$2, 128, 4, 2726);
+    			attr_dev(p, "class", "error svelte-1gup7pl");
+    			add_location(p, file$2, 170, 6, 4025);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -1059,14 +1215,14 @@ var app = (function () {
     		block,
     		id: create_catch_block.name,
     		type: "catch",
-    		source: "(128:2) {:catch}",
+    		source: "(170:4) {:catch}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (112:34)      <div class="game">       <div class="card-container">         <Card celeb={a}
+    // (146:36)        <div class="game">         <div class="card-container">           <Card             celeb={a}
     function create_then_block(ctx) {
     	get_then_context(ctx);
     	let div3;
@@ -1083,26 +1239,34 @@ var app = (function () {
     	let dispose;
 
     	function select_handler() {
-    		return /*select_handler*/ ctx[6](/*a*/ ctx[13], /*b*/ ctx[14]);
+    		return /*select_handler*/ ctx[11](/*a*/ ctx[18], /*b*/ ctx[19]);
     	}
 
     	card0 = new Card({
-    			props: { celeb: /*a*/ ctx[13] },
+    			props: {
+    				celeb: /*a*/ ctx[18],
+    				showprice: !!/*last_result*/ ctx[1],
+    				winner: /*a*/ ctx[18].price >= /*b*/ ctx[19].price
+    			},
     			$$inline: true
     		});
 
     	card0.$on("select", select_handler);
 
-    	function click_handler() {
-    		return /*click_handler*/ ctx[7](/*a*/ ctx[13], /*b*/ ctx[14]);
+    	function click_handler_1() {
+    		return /*click_handler_1*/ ctx[12](/*a*/ ctx[18], /*b*/ ctx[19]);
     	}
 
     	function select_handler_1() {
-    		return /*select_handler_1*/ ctx[8](/*a*/ ctx[13], /*b*/ ctx[14]);
+    		return /*select_handler_1*/ ctx[13](/*a*/ ctx[18], /*b*/ ctx[19]);
     	}
 
     	card1 = new Card({
-    			props: { celeb: /*b*/ ctx[14] },
+    			props: {
+    				celeb: /*b*/ ctx[19],
+    				showprice: !!/*last_result*/ ctx[1],
+    				winner: /*b*/ ctx[19].price >= /*a*/ ctx[18].price
+    			},
     			$$inline: true
     		});
 
@@ -1120,16 +1284,16 @@ var app = (function () {
     			t2 = space();
     			div2 = element("div");
     			create_component(card1.$$.fragment);
-    			attr_dev(div0, "class", "card-container svelte-dpqtkk");
-    			add_location(div0, file$2, 113, 6, 2358);
-    			attr_dev(button, "class", "same svelte-dpqtkk");
-    			add_location(button, file$2, 118, 8, 2482);
-    			attr_dev(div1, "class", "svelte-dpqtkk");
-    			add_location(div1, file$2, 117, 6, 2468);
-    			attr_dev(div2, "class", "card-container svelte-dpqtkk");
-    			add_location(div2, file$2, 123, 6, 2596);
-    			attr_dev(div3, "class", "game svelte-dpqtkk");
-    			add_location(div3, file$2, 112, 4, 2333);
+    			attr_dev(div0, "class", "card-container svelte-1gup7pl");
+    			add_location(div0, file$2, 147, 8, 3427);
+    			attr_dev(button, "class", "same svelte-1gup7pl");
+    			add_location(button, file$2, 156, 10, 3661);
+    			attr_dev(div1, "class", "svelte-1gup7pl");
+    			add_location(div1, file$2, 155, 8, 3645);
+    			attr_dev(div2, "class", "card-container svelte-1gup7pl");
+    			add_location(div2, file$2, 161, 8, 3783);
+    			attr_dev(div3, "class", "game svelte-1gup7pl");
+    			add_location(div3, file$2, 146, 6, 3400);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div3, anchor);
@@ -1144,7 +1308,7 @@ var app = (function () {
     			current = true;
 
     			if (!mounted) {
-    				dispose = listen_dev(button, "click", click_handler, false, false, false);
+    				dispose = listen_dev(button, "click", click_handler_1, false, false, false);
     				mounted = true;
     			}
     		},
@@ -1152,10 +1316,14 @@ var app = (function () {
     			ctx = new_ctx;
     			get_then_context(ctx);
     			const card0_changes = {};
-    			if (dirty & /*i*/ 4) card0_changes.celeb = /*a*/ ctx[13];
+    			if (dirty & /*i*/ 8) card0_changes.celeb = /*a*/ ctx[18];
+    			if (dirty & /*last_result*/ 2) card0_changes.showprice = !!/*last_result*/ ctx[1];
+    			if (dirty & /*i*/ 8) card0_changes.winner = /*a*/ ctx[18].price >= /*b*/ ctx[19].price;
     			card0.$set(card0_changes);
     			const card1_changes = {};
-    			if (dirty & /*i*/ 4) card1_changes.celeb = /*b*/ ctx[14];
+    			if (dirty & /*i*/ 8) card1_changes.celeb = /*b*/ ctx[19];
+    			if (dirty & /*last_result*/ 2) card1_changes.showprice = !!/*last_result*/ ctx[1];
+    			if (dirty & /*i*/ 8) card1_changes.winner = /*b*/ ctx[19].price >= /*a*/ ctx[18].price;
     			card1.$set(card1_changes);
     		},
     		i: function intro(local) {
@@ -1182,14 +1350,14 @@ var app = (function () {
     		block,
     		id: create_then_block.name,
     		type: "then",
-    		source: "(112:34)      <div class=\\\"game\\\">       <div class=\\\"card-container\\\">         <Card celeb={a}",
+    		source: "(146:36)        <div class=\\\"game\\\">         <div class=\\\"card-container\\\">           <Card             celeb={a}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (1:0) <script>   import Card from '../components/Card.svelte';   import { sleep }
+    // (1:0) <script>   import { createEventDispatcher }
     function create_pending_block(ctx) {
     	const block = {
     		c: noop,
@@ -1204,14 +1372,14 @@ var app = (function () {
     		block,
     		id: create_pending_block.name,
     		type: "pending",
-    		source: "(1:0) <script>   import Card from '../components/Card.svelte';   import { sleep }",
+    		source: "(1:0) <script>   import { createEventDispatcher }",
     		ctx
     	});
 
     	return block;
     }
 
-    // (133:0) {#if last_result}
+    // (176:0) {#if last_result}
     function create_if_block_1(ctx) {
     	let img;
     	let img_alt_value;
@@ -1220,10 +1388,10 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			img = element("img");
-    			attr_dev(img, "class", "giant-result svelte-dpqtkk");
+    			attr_dev(img, "class", "giant-result svelte-1gup7pl");
     			attr_dev(img, "alt", img_alt_value = "" + (/*last_result*/ ctx[1] + " answer"));
     			if (img.src !== (img_src_value = "/icons/" + /*last_result*/ ctx[1] + ".svg")) attr_dev(img, "src", img_src_value);
-    			add_location(img, file$2, 133, 2, 2812);
+    			add_location(img, file$2, 176, 2, 4121);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, img, anchor);
@@ -1246,14 +1414,14 @@ var app = (function () {
     		block,
     		id: create_if_block_1.name,
     		type: "if",
-    		source: "(133:0) {#if last_result}",
+    		source: "(176:0) {#if last_result}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (145:6) {#if result}
+    // (188:6) {#if result}
     function create_if_block$1(ctx) {
     	let img;
     	let img_alt_value;
@@ -1262,20 +1430,20 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			img = element("img");
-    			attr_dev(img, "alt", img_alt_value = "" + (/*result*/ ctx[10] + " answer"));
-    			if (img.src !== (img_src_value = "/icons/" + /*result*/ ctx[10] + ".svg")) attr_dev(img, "src", img_src_value);
-    			attr_dev(img, "class", "svelte-dpqtkk");
-    			add_location(img, file$2, 144, 18, 3077);
+    			attr_dev(img, "alt", img_alt_value = "" + (/*result*/ ctx[15] + " answer"));
+    			if (img.src !== (img_src_value = "/icons/" + /*result*/ ctx[15] + ".svg")) attr_dev(img, "src", img_src_value);
+    			attr_dev(img, "class", "svelte-1gup7pl");
+    			add_location(img, file$2, 187, 18, 4386);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, img, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*results*/ 1 && img_alt_value !== (img_alt_value = "" + (/*result*/ ctx[10] + " answer"))) {
+    			if (dirty & /*results*/ 1 && img_alt_value !== (img_alt_value = "" + (/*result*/ ctx[15] + " answer"))) {
     				attr_dev(img, "alt", img_alt_value);
     			}
 
-    			if (dirty & /*results*/ 1 && img.src !== (img_src_value = "/icons/" + /*result*/ ctx[10] + ".svg")) {
+    			if (dirty & /*results*/ 1 && img.src !== (img_src_value = "/icons/" + /*result*/ ctx[15] + ".svg")) {
     				attr_dev(img, "src", img_src_value);
     			}
     		},
@@ -1288,26 +1456,26 @@ var app = (function () {
     		block,
     		id: create_if_block$1.name,
     		type: "if",
-    		source: "(145:6) {#if result}",
+    		source: "(188:6) {#if result}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (143:2) {#each results as result}
+    // (186:2) {#each results as result}
     function create_each_block$1(ctx) {
     	let span;
     	let t;
-    	let if_block = /*result*/ ctx[10] && create_if_block$1(ctx);
+    	let if_block = /*result*/ ctx[15] && create_if_block$1(ctx);
 
     	const block = {
     		c: function create() {
     			span = element("span");
     			if (if_block) if_block.c();
     			t = space();
-    			attr_dev(span, "class", "result svelte-dpqtkk");
-    			add_location(span, file$2, 143, 4, 3037);
+    			attr_dev(span, "class", "result svelte-1gup7pl");
+    			add_location(span, file$2, 186, 4, 4346);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -1315,7 +1483,7 @@ var app = (function () {
     			append_dev(span, t);
     		},
     		p: function update(ctx, dirty) {
-    			if (/*result*/ ctx[10]) {
+    			if (/*result*/ ctx[15]) {
     				if (if_block) {
     					if_block.p(ctx, dirty);
     				} else {
@@ -1338,7 +1506,7 @@ var app = (function () {
     		block,
     		id: create_each_block$1.name,
     		type: "each",
-    		source: "(143:2) {#each results as result}",
+    		source: "(186:2) {#each results as result}",
     		ctx
     	});
 
@@ -1350,26 +1518,23 @@ var app = (function () {
     	let p;
     	let t1;
     	let div0;
-    	let promise;
+    	let current_block_type_index;
+    	let if_block0;
     	let t2;
     	let t3;
     	let div1;
     	let current;
+    	const if_block_creators = [create_if_block_2, create_else_block];
+    	const if_blocks = [];
 
-    	let info = {
-    		ctx,
-    		current: null,
-    		token: null,
-    		hasCatch: true,
-    		pending: create_pending_block,
-    		then: create_then_block,
-    		catch: create_catch_block,
-    		value: 15,
-    		blocks: [,,,]
-    	};
+    	function select_block_type(ctx, dirty) {
+    		if (/*done*/ ctx[2]) return 0;
+    		return 1;
+    	}
 
-    	handle_promise(promise = /*promises*/ ctx[3][/*i*/ ctx[2]], info);
-    	let if_block = /*last_result*/ ctx[1] && create_if_block_1(ctx);
+    	current_block_type_index = select_block_type(ctx);
+    	if_block0 = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+    	let if_block1 = /*last_result*/ ctx[1] && create_if_block_1(ctx);
     	let each_value = /*results*/ ctx[0];
     	validate_each_argument(each_value);
     	let each_blocks = [];
@@ -1385,9 +1550,9 @@ var app = (function () {
     			p.textContent = "Tap on the more monetisable celebrity's face, or tap 'same price' if society\n    values them equally.";
     			t1 = space();
     			div0 = element("div");
-    			info.block.c();
+    			if_block0.c();
     			t2 = space();
-    			if (if_block) if_block.c();
+    			if (if_block1) if_block1.c();
     			t3 = space();
     			div1 = element("div");
 
@@ -1395,13 +1560,13 @@ var app = (function () {
     				each_blocks[i].c();
     			}
 
-    			add_location(p, file$2, 104, 2, 2137);
-    			add_location(header, file$2, 103, 0, 2126);
-    			attr_dev(div0, "class", "game-container svelte-dpqtkk");
-    			add_location(div0, file$2, 110, 0, 2265);
-    			attr_dev(div1, "class", "results svelte-dpqtkk");
+    			add_location(p, file$2, 131, 2, 2963);
+    			add_location(header, file$2, 130, 0, 2952);
+    			attr_dev(div0, "class", "game-container svelte-1gup7pl");
+    			add_location(div0, file$2, 137, 0, 3091);
+    			attr_dev(div1, "class", "results svelte-1gup7pl");
     			set_style(div1, "grid-template-columns", "repeat(" + /*results*/ ctx[0].length + ", 1fr)");
-    			add_location(div1, file$2, 139, 0, 2918);
+    			add_location(div1, file$2, 182, 0, 4227);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1411,11 +1576,9 @@ var app = (function () {
     			append_dev(header, p);
     			insert_dev(target, t1, anchor);
     			insert_dev(target, div0, anchor);
-    			info.block.m(div0, info.anchor = null);
-    			info.mount = () => div0;
-    			info.anchor = null;
+    			if_blocks[current_block_type_index].m(div0, null);
     			insert_dev(target, t2, anchor);
-    			if (if_block) if_block.m(target, anchor);
+    			if (if_block1) if_block1.m(target, anchor);
     			insert_dev(target, t3, anchor);
     			insert_dev(target, div1, anchor);
 
@@ -1425,27 +1588,44 @@ var app = (function () {
 
     			current = true;
     		},
-    		p: function update(new_ctx, [dirty]) {
-    			ctx = new_ctx;
-    			info.ctx = ctx;
+    		p: function update(ctx, [dirty]) {
+    			let previous_block_index = current_block_type_index;
+    			current_block_type_index = select_block_type(ctx);
 
-    			if (dirty & /*i*/ 4 && promise !== (promise = /*promises*/ ctx[3][/*i*/ ctx[2]]) && handle_promise(promise, info)) ; else {
-    				const child_ctx = ctx.slice();
-    				child_ctx[15] = info.resolved;
-    				info.block.p(child_ctx, dirty);
+    			if (current_block_type_index === previous_block_index) {
+    				if_blocks[current_block_type_index].p(ctx, dirty);
+    			} else {
+    				group_outros();
+
+    				transition_out(if_blocks[previous_block_index], 1, 1, () => {
+    					if_blocks[previous_block_index] = null;
+    				});
+
+    				check_outros();
+    				if_block0 = if_blocks[current_block_type_index];
+
+    				if (!if_block0) {
+    					if_block0 = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+    					if_block0.c();
+    				} else {
+    					if_block0.p(ctx, dirty);
+    				}
+
+    				transition_in(if_block0, 1);
+    				if_block0.m(div0, null);
     			}
 
     			if (/*last_result*/ ctx[1]) {
-    				if (if_block) {
-    					if_block.p(ctx, dirty);
+    				if (if_block1) {
+    					if_block1.p(ctx, dirty);
     				} else {
-    					if_block = create_if_block_1(ctx);
-    					if_block.c();
-    					if_block.m(t3.parentNode, t3);
+    					if_block1 = create_if_block_1(ctx);
+    					if_block1.c();
+    					if_block1.m(t3.parentNode, t3);
     				}
-    			} else if (if_block) {
-    				if_block.d(1);
-    				if_block = null;
+    			} else if (if_block1) {
+    				if_block1.d(1);
+    				if_block1 = null;
     			}
 
     			if (dirty & /*results*/ 1) {
@@ -1478,26 +1658,20 @@ var app = (function () {
     		},
     		i: function intro(local) {
     			if (current) return;
-    			transition_in(info.block);
+    			transition_in(if_block0);
     			current = true;
     		},
     		o: function outro(local) {
-    			for (let i = 0; i < 3; i += 1) {
-    				const block = info.blocks[i];
-    				transition_out(block);
-    			}
-
+    			transition_out(if_block0);
     			current = false;
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(header);
     			if (detaching) detach_dev(t1);
     			if (detaching) detach_dev(div0);
-    			info.block.d();
-    			info.token = null;
-    			info = null;
+    			if_blocks[current_block_type_index].d();
     			if (detaching) detach_dev(t2);
-    			if (if_block) if_block.d(detaching);
+    			if (if_block1) if_block1.d(detaching);
     			if (detaching) detach_dev(t3);
     			if (detaching) detach_dev(div1);
     			destroy_each(each_blocks, detaching);
@@ -1519,6 +1693,7 @@ var app = (function () {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots("Game", slots, []);
     	let { selection } = $$props;
+    	const dispatch = createEventDispatcher();
 
     	const load_details = async celeb => {
     		const res = await fetch(`https://cameo-explorer.netlify.app/celebs/${celeb.id}.json`);
@@ -1528,6 +1703,15 @@ var app = (function () {
     	const promises = selection.map(round => Promise.all([load_details(round.a), load_details(round.b)]));
     	const results = Array(selection.length);
     	let last_result;
+    	let done = false;
+
+    	const pick_message = p => {
+    		if (p <= 0.2) return pick_random([`Oof.`, `Better luck next time?`]);
+    		if (p <= 0.5) return pick_random([`I've seen worse`, `Keep trying!`]);
+    		if (p <= 0.8) return pick_random([`Yeah!`, `Not bad. Practice makes perfect`]);
+    		if (p < 1) return pick_random([`Impressive.`]);
+    		return pick_random([`Flawless victory`, `Top marks`]);
+    	};
 
     	const submit = async (a, b, sign) => {
     		$$invalidate(1, last_result = Math.sign(a.price - b.price) === sign
@@ -1539,8 +1723,10 @@ var app = (function () {
     		$$invalidate(1, last_result = null);
 
     		if (i < selection.length - 1) {
-    			$$invalidate(2, i += 1);
-    		} // TODO end the game
+    			$$invalidate(3, i += 1);
+    		} else {
+    			$$invalidate(2, done = true);
+    		}
     	};
 
     	let i = 0;
@@ -1550,45 +1736,67 @@ var app = (function () {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Game> was created with unknown prop '${key}'`);
     	});
 
+    	const click_handler = () => dispatch("restart");
     	const select_handler = (a, b) => submit(a, b, 1);
-    	const click_handler = (a, b) => submit(a, b, 0);
+    	const click_handler_1 = (a, b) => submit(a, b, 0);
     	const select_handler_1 = (a, b) => submit(a, b, -1);
 
     	$$self.$$set = $$props => {
-    		if ("selection" in $$props) $$invalidate(5, selection = $$props.selection);
+    		if ("selection" in $$props) $$invalidate(9, selection = $$props.selection);
     	};
 
     	$$self.$capture_state = () => ({
+    		createEventDispatcher,
     		Card,
     		sleep,
+    		pick_random,
     		selection,
+    		dispatch,
     		load_details,
     		promises,
     		results,
     		last_result,
+    		done,
+    		pick_message,
     		submit,
-    		i
+    		i,
+    		score
     	});
 
     	$$self.$inject_state = $$props => {
-    		if ("selection" in $$props) $$invalidate(5, selection = $$props.selection);
+    		if ("selection" in $$props) $$invalidate(9, selection = $$props.selection);
     		if ("last_result" in $$props) $$invalidate(1, last_result = $$props.last_result);
-    		if ("i" in $$props) $$invalidate(2, i = $$props.i);
+    		if ("done" in $$props) $$invalidate(2, done = $$props.done);
+    		if ("i" in $$props) $$invalidate(3, i = $$props.i);
+    		if ("score" in $$props) $$invalidate(4, score = $$props.score);
     	};
+
+    	let score;
 
     	if ($$props && "$$inject" in $$props) {
     		$$self.$inject_state($$props.$$inject);
     	}
 
+    	$$self.$$.update = () => {
+    		if ($$self.$$.dirty & /*results*/ 1) {
+    			 $$invalidate(4, score = results.filter(x => x === "right").length);
+    		}
+    	};
+
     	return [
     		results,
     		last_result,
+    		done,
     		i,
+    		score,
+    		dispatch,
     		promises,
+    		pick_message,
     		submit,
     		selection,
-    		select_handler,
     		click_handler,
+    		select_handler,
+    		click_handler_1,
     		select_handler_1
     	];
     }
@@ -1596,7 +1804,7 @@ var app = (function () {
     class Game extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$2, create_fragment$2, safe_not_equal, { selection: 5 });
+    		init(this, options, instance$2, create_fragment$2, safe_not_equal, { selection: 9 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -1608,7 +1816,7 @@ var app = (function () {
     		const { ctx } = this.$$;
     		const props = options.props || {};
 
-    		if (/*selection*/ ctx[5] === undefined && !("selection" in props)) {
+    		if (/*selection*/ ctx[9] === undefined && !("selection" in props)) {
     			console.warn("<Game> was created without expected prop 'selection'");
     		}
     	}
