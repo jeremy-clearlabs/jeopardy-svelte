@@ -1,30 +1,60 @@
 <script>
-	export let name;
+  import { onMount } from 'svelte';
+  import Welcome from './screens/Welcome.svelte';
+  import { select } from './select';
+	
+	let celebs_promise;
+  let state = 'welcome'; // 'welcome' or 'playing'
+  let selection;
+	
+	const start = async (e) => {
+    const { celebs, lookup } = await celebs_promise;
+    selection = select(celebs, lookup, e.detail.category.slug);
+    state = 'playing';
+  };
+  const load_celebs = async () => {
+    const res = await fetch('https://cameo-explorer.netlify.app/celebs.json');
+    const data = await res.json();
+    const lookup = new Map();
+    data.forEach((c) => {
+      lookup.set(c.id, c);
+    });
+    const subset = new Set();
+    data.forEach((celeb) => {
+      if (celeb.reviews >= 50) {
+        subset.add(celeb);
+        celeb.similar.forEach((id) => {
+          subset.add(lookup.get(id));
+        });
+      }
+    });
+    return {
+      celebs: Array.from(subset),
+      lookup,
+    };
+  };
+  onMount(() => {
+    celebs_promise = load_celebs();
+  });
 </script>
 
-<main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-</main>
-
 <style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
-
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
+  main {
+    text-align: center;
+    padding: 1em;
+    max-width: 800px;
+    margin: 0 auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
 </style>
+
+<main>
+  {#if state === 'welcome'}
+    <Welcome on:select={start} />
+  {:else if state === 'playing'}
+    <p>game screen goes here</p>
+  {/if}
+</main>
