@@ -41,7 +41,7 @@
 </script>
 
 <style>
-  /* main {
+  article {
     text-align: center;
     padding: 1em;
     max-width: 800px;
@@ -50,12 +50,14 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-  } */
+  }
 </style>
 
 <main>
   {#if state === 'welcome'}
-    <Welcome on:start={startGame} />
+    <article>
+      <Welcome on:start={startGame} />
+    </article>
   {:else if state === 'playing'}
     <Game on:restart={() => (state = 'welcome')} />
   {/if}

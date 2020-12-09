@@ -32,6 +32,10 @@
     showSingleClue = false;
   };
 
+  // const handleKeydown = (event) => {
+  //   console.log('key', event);
+  // };
+
   // let i = 0;
 </script>
 
@@ -146,7 +150,9 @@
     </div>
   </div>
   {#if Boolean(showSingleClue)}
-    <div class="jeopardy-clue-single" on:click={() => closeCurrentClue()}>
+    <div
+      class="jeopardy-clue-single"
+      on:click={() => closeCurrentClue()}>
       {currentClue.answer}
     </div>
   {/if}
