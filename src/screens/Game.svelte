@@ -1,21 +1,25 @@
 <script>
   import { onMount } from 'svelte';
   import { createEventDispatcher } from 'svelte';
-  import { fly, scale, crossfade } from 'svelte/transition';
   import * as eases from 'svelte/easing';
+  import { scale } from 'svelte/transition';
+  import { quintOut } from 'svelte/easing';
+
   import Card from '../components/Card.svelte';
-  import { sleep, pick_random, load_image } from '../utils.js';
+  import Clue from '../components/Clue.svelte';
+  import { gameRound } from '../stores/gameRound.js';
 
   let data_promise;
   let categories = [];
   let clueRows = [];
   let currentClue;
+  let currentClueLocation;
   let showSingleClue = false;
-  console.log('showSingleClue', showSingleClue);
 
   const loadGame = async () => {
     const res = await fetch(`/data.json`);
     categories = await res.json();
+    // gameRound.initialize(categories);
     clueRows = new Array(categories.length).fill().map((_, i) => i);
   };
 
@@ -23,12 +27,16 @@
     data_promise = loadGame();
   });
 
-  const setCurrentClue = (clue) => {
+  const setCurrentClue = (clue, clueLocation) => {
     currentClue = clue;
+    currentClueLocation = clueLocation;
     showSingleClue = true;
   };
 
   const closeCurrentClue = () => {
+    // gameRound.setAnswered(currentClueLocation);
+    const { categoryIndex, clueIndex } = currentClueLocation;
+    categories[categoryIndex].clues[clueIndex].answered = true;
     showSingleClue = false;
   };
 
@@ -108,22 +116,20 @@
     background: var(--jeopardy-blue-dark);
   }
 
-  .jeopardy-clue-single {
+  .jeopardy-board-clue--disabled {
+    cursor: not-allowed;
+    background-color: var(--jeopardy-blue-dark);
+  }
+
+  .jeopardy-clue--absolute {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     width: 95vw;
     height: 95vh;
     background-color: var(--jeopardy-blue);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Fjalla One', sans-serif;
-    font-size: 3.2rem;
-    text-align: center;
-    padding: 1rem;
     box-shadow: 0.5rem 0.5rem #000;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
   }
 </style>
 
@@ -138,10 +144,13 @@
     <div class="jeopardy-board-columns">
       {#each clueRows as categoryIndex}
         <div class="jeopardy-board-clues">
-          {#each categories[categoryIndex].clues as clue}
+          {#each categories[categoryIndex].clues as clue, clueIndex}
             <div
-              class="jeopardy-board-clue"
-              on:click={() => setCurrentClue(clue)}>
+              class={clue.answered ? 'jeopardy-board-clue jeopardy-board-clue--disabled' : 'jeopardy-board-clue'}
+              on:click={() => !clue.answered && setCurrentClue(clue, {
+                  categoryIndex,
+                  clueIndex,
+                })}>
               ${clue.price}
             </div>
           {/each}
@@ -149,11 +158,12 @@
       {/each}
     </div>
   </div>
+
   {#if Boolean(showSingleClue)}
     <div
-      class="jeopardy-clue-single"
-      on:click={() => closeCurrentClue()}>
-      {currentClue.answer}
+      class="jeopardy-clue--absolute"
+      transition:scale={{ duration: 250, delay: 100, opacity: 0.1, start: 0.1, easing: quintOut }}>
+      <Clue {closeCurrentClue} {...currentClue} />
     </div>
   {/if}
 </div>

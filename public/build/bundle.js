@@ -34,6 +34,9 @@ var app = (function () {
     function is_empty(obj) {
         return Object.keys(obj).length === 0;
     }
+    function null_to_empty(value) {
+        return value == null ? '' : value;
+    }
 
     const is_client = typeof window !== 'undefined';
     let now = is_client
@@ -384,12 +387,148 @@ var app = (function () {
             }
         };
     }
+    function create_bidirectional_transition(node, fn, params, intro) {
+        let config = fn(node, params);
+        let t = intro ? 0 : 1;
+        let running_program = null;
+        let pending_program = null;
+        let animation_name = null;
+        function clear_animation() {
+            if (animation_name)
+                delete_rule(node, animation_name);
+        }
+        function init(program, duration) {
+            const d = program.b - t;
+            duration *= Math.abs(d);
+            return {
+                a: t,
+                b: program.b,
+                d,
+                duration,
+                start: program.start,
+                end: program.start + duration,
+                group: program.group
+            };
+        }
+        function go(b) {
+            const { delay = 0, duration = 300, easing = identity, tick = noop, css } = config || null_transition;
+            const program = {
+                start: now() + delay,
+                b
+            };
+            if (!b) {
+                // @ts-ignore todo: improve typings
+                program.group = outros;
+                outros.r += 1;
+            }
+            if (running_program || pending_program) {
+                pending_program = program;
+            }
+            else {
+                // if this is an intro, and there's a delay, we need to do
+                // an initial tick and/or apply CSS animation immediately
+                if (css) {
+                    clear_animation();
+                    animation_name = create_rule(node, t, b, duration, delay, easing, css);
+                }
+                if (b)
+                    tick(0, 1);
+                running_program = init(program, duration);
+                add_render_callback(() => dispatch(node, b, 'start'));
+                loop(now => {
+                    if (pending_program && now > pending_program.start) {
+                        running_program = init(pending_program, duration);
+                        pending_program = null;
+                        dispatch(node, running_program.b, 'start');
+                        if (css) {
+                            clear_animation();
+                            animation_name = create_rule(node, t, running_program.b, running_program.duration, 0, easing, config.css);
+                        }
+                    }
+                    if (running_program) {
+                        if (now >= running_program.end) {
+                            tick(t = running_program.b, 1 - t);
+                            dispatch(node, running_program.b, 'end');
+                            if (!pending_program) {
+                                // we're done
+                                if (running_program.b) {
+                                    // intro — we can tidy up immediately
+                                    clear_animation();
+                                }
+                                else {
+                                    // outro — needs to be coordinated
+                                    if (!--running_program.group.r)
+                                        run_all(running_program.group.c);
+                                }
+                            }
+                            running_program = null;
+                        }
+                        else if (now >= running_program.start) {
+                            const p = now - running_program.start;
+                            t = running_program.a + running_program.d * easing(p / running_program.duration);
+                            tick(t, 1 - t);
+                        }
+                    }
+                    return !!(running_program || pending_program);
+                });
+            }
+        }
+        return {
+            run(b) {
+                if (is_function(config)) {
+                    wait().then(() => {
+                        // @ts-ignore
+                        config = config();
+                        go(b);
+                    });
+                }
+                else {
+                    go(b);
+                }
+            },
+            end() {
+                clear_animation();
+                running_program = pending_program = null;
+            }
+        };
+    }
 
-    const globals = (typeof window !== 'undefined'
-        ? window
-        : typeof globalThis !== 'undefined'
-            ? globalThis
-            : global);
+    function get_spread_update(levels, updates) {
+        const update = {};
+        const to_null_out = {};
+        const accounted_for = { $$scope: 1 };
+        let i = levels.length;
+        while (i--) {
+            const o = levels[i];
+            const n = updates[i];
+            if (n) {
+                for (const key in o) {
+                    if (!(key in n))
+                        to_null_out[key] = 1;
+                }
+                for (const key in n) {
+                    if (!accounted_for[key]) {
+                        update[key] = n[key];
+                        accounted_for[key] = 1;
+                    }
+                }
+                levels[i] = n;
+            }
+            else {
+                for (const key in o) {
+                    accounted_for[key] = 1;
+                }
+            }
+        }
+        for (const key in to_null_out) {
+            if (!(key in update))
+                update[key] = undefined;
+        }
+        return update;
+    }
+    function get_spread_object(spread_props) {
+        return typeof spread_props === 'object' && spread_props !== null ? spread_props : {};
+    }
     function create_component(block) {
         block && block.c();
     }
@@ -893,46 +1032,6 @@ var app = (function () {
         linear: identity
     });
 
-    /*! *****************************************************************************
-    Copyright (c) Microsoft Corporation. All rights reserved.
-    Licensed under the Apache License, Version 2.0 (the "License"); you may not use
-    this file except in compliance with the License. You may obtain a copy of the
-    License at http://www.apache.org/licenses/LICENSE-2.0
-
-    THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-    KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
-    WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
-    MERCHANTABLITY OR NON-INFRINGEMENT.
-
-    See the Apache Version 2.0 License for specific language governing permissions
-    and limitations under the License.
-    ***************************************************************************** */
-
-    function __rest(s, e) {
-        var t = {};
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-            t[p] = s[p];
-        if (s != null && typeof Object.getOwnPropertySymbols === "function")
-            for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-                if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                    t[p[i]] = s[p[i]];
-            }
-        return t;
-    }
-    function fly(node, { delay = 0, duration = 400, easing = cubicOut, x = 0, y = 0, opacity = 0 }) {
-        const style = getComputedStyle(node);
-        const target_opacity = +style.opacity;
-        const transform = style.transform === 'none' ? '' : style.transform;
-        const od = target_opacity * (1 - opacity);
-        return {
-            delay,
-            duration,
-            easing,
-            css: (t, u) => `
-			transform: ${transform} translate(${(1 - t) * x}px, ${(1 - t) * y}px);
-			opacity: ${target_opacity - (od * u)}`
-        };
-    }
     function scale(node, { delay = 0, duration = 400, easing = cubicOut, start = 0, opacity = 0 }) {
         const style = getComputedStyle(node);
         const target_opacity = +style.opacity;
@@ -948,56 +1047,6 @@ var app = (function () {
 			opacity: ${target_opacity - (od * u)}
 		`
         };
-    }
-    function crossfade(_a) {
-        var { fallback } = _a, defaults = __rest(_a, ["fallback"]);
-        const to_receive = new Map();
-        const to_send = new Map();
-        function crossfade(from, node, params) {
-            const { delay = 0, duration = d => Math.sqrt(d) * 30, easing = cubicOut } = assign(assign({}, defaults), params);
-            const to = node.getBoundingClientRect();
-            const dx = from.left - to.left;
-            const dy = from.top - to.top;
-            const dw = from.width / to.width;
-            const dh = from.height / to.height;
-            const d = Math.sqrt(dx * dx + dy * dy);
-            const style = getComputedStyle(node);
-            const transform = style.transform === 'none' ? '' : style.transform;
-            const opacity = +style.opacity;
-            return {
-                delay,
-                duration: is_function(duration) ? duration(d) : duration,
-                easing,
-                css: (t, u) => `
-				opacity: ${t * opacity};
-				transform-origin: top left;
-				transform: ${transform} translate(${u * dx}px,${u * dy}px) scale(${t + (1 - t) * dw}, ${t + (1 - t) * dh});
-			`
-            };
-        }
-        function transition(items, counterparts, intro) {
-            return (node, params) => {
-                items.set(params.key, {
-                    rect: node.getBoundingClientRect()
-                });
-                return () => {
-                    if (counterparts.has(params.key)) {
-                        const { rect } = counterparts.get(params.key);
-                        counterparts.delete(params.key);
-                        return crossfade(rect, node, params);
-                    }
-                    // if the node is disappearing altogether
-                    // (i.e. wasn't claimed by the other list)
-                    // then we need to supply an outro
-                    items.delete(params.key);
-                    return fallback && fallback(node, params, intro);
-                };
-            };
-        }
-        return [
-            transition(to_send, to_receive, false),
-            transition(to_receive, to_send, true)
-        ];
     }
 
     /* src/components/Card.svelte generated by Svelte v3.31.0 */
@@ -1280,30 +1329,333 @@ var app = (function () {
     	}
     }
 
-    function pick_random(array) {
-      const index = Math.floor(array.length * Math.random());
-      return array[index];
+    /* src/components/Clue.svelte generated by Svelte v3.31.0 */
+
+    const file$2 = "src/components/Clue.svelte";
+
+    // (43:2) {#if revealAnswer}
+    function create_if_block$1(ctx) {
+    	let div;
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+    			t = text(/*answer*/ ctx[1]);
+    			attr_dev(div, "class", "jeopardy-answer svelte-7lserl");
+    			add_location(div, file$2, 43, 4, 818);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			append_dev(div, t);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*answer*/ 2) set_data_dev(t, /*answer*/ ctx[1]);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block$1.name,
+    		type: "if",
+    		source: "(43:2) {#if revealAnswer}",
+    		ctx
+    	});
+
+    	return block;
     }
 
-    function sleep(ms) {
-      return new Promise((fulfil) => {
-        setTimeout(fulfil, ms);
-      });
+    function create_fragment$2(ctx) {
+    	let div1;
+    	let div0;
+    	let t0;
+    	let t1;
+    	let mounted;
+    	let dispose;
+    	let if_block = /*revealAnswer*/ ctx[3] && create_if_block$1(ctx);
+
+    	const block = {
+    		c: function create() {
+    			div1 = element("div");
+    			div0 = element("div");
+    			t0 = text(/*clue*/ ctx[0]);
+    			t1 = space();
+    			if (if_block) if_block.c();
+    			attr_dev(div0, "class", "jeopardy-clue");
+    			add_location(div0, file$2, 41, 2, 753);
+    			attr_dev(div1, "class", "jeopardy-clue-wrapper svelte-7lserl");
+    			add_location(div1, file$2, 37, 0, 672);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div1, anchor);
+    			append_dev(div1, div0);
+    			append_dev(div0, t0);
+    			append_dev(div1, t1);
+    			if (if_block) if_block.m(div1, null);
+
+    			if (!mounted) {
+    				dispose = [
+    					listen_dev(window, "keydown", /*handleKeydown*/ ctx[4], false, false, false),
+    					listen_dev(div1, "click", /*click_handler*/ ctx[6], false, false, false)
+    				];
+
+    				mounted = true;
+    			}
+    		},
+    		p: function update(ctx, [dirty]) {
+    			if (dirty & /*clue*/ 1) set_data_dev(t0, /*clue*/ ctx[0]);
+
+    			if (/*revealAnswer*/ ctx[3]) {
+    				if (if_block) {
+    					if_block.p(ctx, dirty);
+    				} else {
+    					if_block = create_if_block$1(ctx);
+    					if_block.c();
+    					if_block.m(div1, null);
+    				}
+    			} else if (if_block) {
+    				if_block.d(1);
+    				if_block = null;
+    			}
+    		},
+    		i: noop,
+    		o: noop,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div1);
+    			if (if_block) if_block.d();
+    			mounted = false;
+    			run_all(dispose);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$2.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
     }
 
-    function load_image(src) {
-      return new Promise((fulfil, reject) => {
-        const img = new Image();
-        img.onload = () => fulfil();
-        img.onerror = reject;
-        img.src = src;
-      });
+    function instance$2($$self, $$props, $$invalidate) {
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots("Clue", slots, []);
+    	let { clue } = $$props;
+    	let { answer } = $$props;
+    	let { price } = $$props;
+    	let { closeCurrentClue } = $$props;
+    	let revealAnswer = false;
+
+    	const handleKeydown = event => {
+    		if (event?.key === "Escape") {
+    			closeCurrentClue();
+    		}
+
+    		if (event?.key === "a") {
+    			$$invalidate(3, revealAnswer = true);
+    		}
+    	};
+
+    	const writable_props = ["clue", "answer", "price", "closeCurrentClue"];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Clue> was created with unknown prop '${key}'`);
+    	});
+
+    	const click_handler = () => closeCurrentClue();
+
+    	$$self.$$set = $$props => {
+    		if ("clue" in $$props) $$invalidate(0, clue = $$props.clue);
+    		if ("answer" in $$props) $$invalidate(1, answer = $$props.answer);
+    		if ("price" in $$props) $$invalidate(5, price = $$props.price);
+    		if ("closeCurrentClue" in $$props) $$invalidate(2, closeCurrentClue = $$props.closeCurrentClue);
+    	};
+
+    	$$self.$capture_state = () => ({
+    		clue,
+    		answer,
+    		price,
+    		closeCurrentClue,
+    		revealAnswer,
+    		handleKeydown
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ("clue" in $$props) $$invalidate(0, clue = $$props.clue);
+    		if ("answer" in $$props) $$invalidate(1, answer = $$props.answer);
+    		if ("price" in $$props) $$invalidate(5, price = $$props.price);
+    		if ("closeCurrentClue" in $$props) $$invalidate(2, closeCurrentClue = $$props.closeCurrentClue);
+    		if ("revealAnswer" in $$props) $$invalidate(3, revealAnswer = $$props.revealAnswer);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	return [
+    		clue,
+    		answer,
+    		closeCurrentClue,
+    		revealAnswer,
+    		handleKeydown,
+    		price,
+    		click_handler
+    	];
     }
+
+    class Clue extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+
+    		init(this, options, instance$2, create_fragment$2, safe_not_equal, {
+    			clue: 0,
+    			answer: 1,
+    			price: 5,
+    			closeCurrentClue: 2
+    		});
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "Clue",
+    			options,
+    			id: create_fragment$2.name
+    		});
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+
+    		if (/*clue*/ ctx[0] === undefined && !("clue" in props)) {
+    			console.warn("<Clue> was created without expected prop 'clue'");
+    		}
+
+    		if (/*answer*/ ctx[1] === undefined && !("answer" in props)) {
+    			console.warn("<Clue> was created without expected prop 'answer'");
+    		}
+
+    		if (/*price*/ ctx[5] === undefined && !("price" in props)) {
+    			console.warn("<Clue> was created without expected prop 'price'");
+    		}
+
+    		if (/*closeCurrentClue*/ ctx[2] === undefined && !("closeCurrentClue" in props)) {
+    			console.warn("<Clue> was created without expected prop 'closeCurrentClue'");
+    		}
+    	}
+
+    	get clue() {
+    		throw new Error("<Clue>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set clue(value) {
+    		throw new Error("<Clue>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get answer() {
+    		throw new Error("<Clue>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set answer(value) {
+    		throw new Error("<Clue>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get price() {
+    		throw new Error("<Clue>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set price(value) {
+    		throw new Error("<Clue>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get closeCurrentClue() {
+    		throw new Error("<Clue>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set closeCurrentClue(value) {
+    		throw new Error("<Clue>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    const subscriber_queue = [];
+    /**
+     * Create a `Writable` store that allows both updating and reading by subscription.
+     * @param {*=}value initial value
+     * @param {StartStopNotifier=}start start and stop notifications for subscriptions
+     */
+    function writable(value, start = noop) {
+        let stop;
+        const subscribers = [];
+        function set(new_value) {
+            if (safe_not_equal(value, new_value)) {
+                value = new_value;
+                if (stop) { // store is ready
+                    const run_queue = !subscriber_queue.length;
+                    for (let i = 0; i < subscribers.length; i += 1) {
+                        const s = subscribers[i];
+                        s[1]();
+                        subscriber_queue.push(s, value);
+                    }
+                    if (run_queue) {
+                        for (let i = 0; i < subscriber_queue.length; i += 2) {
+                            subscriber_queue[i][0](subscriber_queue[i + 1]);
+                        }
+                        subscriber_queue.length = 0;
+                    }
+                }
+            }
+        }
+        function update(fn) {
+            set(fn(value));
+        }
+        function subscribe(run, invalidate = noop) {
+            const subscriber = [run, invalidate];
+            subscribers.push(subscriber);
+            if (subscribers.length === 1) {
+                stop = start(set) || noop;
+            }
+            run(value);
+            return () => {
+                const index = subscribers.indexOf(subscriber);
+                if (index !== -1) {
+                    subscribers.splice(index, 1);
+                }
+                if (subscribers.length === 0) {
+                    stop();
+                    stop = null;
+                }
+            };
+        }
+        return { set, update, subscribe };
+    }
+
+    function gameRoundStatus() {
+      const { subscribe, set, update } = writable([]);
+
+      return {
+        subscribe,
+        initialize: (categories) => update(() => categories),
+        setAnswered: ({ categoryIndex, clueIndex }) =>
+          update((categories) => {
+    				console.log(categoryIndex, clueIndex);
+    				console.log(categories);
+    				categories[categoryIndex].clues[clueIndex].answered = true;
+    				return categories;
+          }),
+        allAnswered: () => update((n) => n - 1),
+        reset: () => set([]),
+      };
+    }
+
+    const gameRound = gameRoundStatus();
 
     /* src/screens/Game.svelte generated by Svelte v3.31.0 */
-
-    const { console: console_1 } = globals;
-    const file$2 = "src/screens/Game.svelte";
+    const file$3 = "src/screens/Game.svelte";
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
@@ -1314,6 +1666,7 @@ var app = (function () {
     function get_each_context_1(ctx, list, i) {
     	const child_ctx = ctx.slice();
     	child_ctx[13] = list[i];
+    	child_ctx[15] = i;
     	return child_ctx;
     }
 
@@ -1323,7 +1676,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (133:6) {#each categories as category}
+    // (139:6) {#each categories as category}
     function create_each_block_2(ctx) {
     	let div;
     	let t_value = /*category*/ ctx[16].name + "";
@@ -1333,8 +1686,8 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			t = text(t_value);
-    			attr_dev(div, "class", "jeopardy-board-category svelte-8rlv1h");
-    			add_location(div, file$2, 133, 8, 2974);
+    			attr_dev(div, "class", "jeopardy-board-category svelte-1qnnebj");
+    			add_location(div, file$3, 139, 8, 3226);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -1352,24 +1705,25 @@ var app = (function () {
     		block,
     		id: create_each_block_2.name,
     		type: "each",
-    		source: "(133:6) {#each categories as category}",
+    		source: "(139:6) {#each categories as category}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (141:10) {#each categories[categoryIndex].clues as clue}
+    // (147:10) {#each categories[categoryIndex].clues as clue, clueIndex}
     function create_each_block_1(ctx) {
     	let div;
     	let t0;
     	let t1_value = /*clue*/ ctx[13].price + "";
     	let t1;
+    	let div_class_value;
     	let mounted;
     	let dispose;
 
     	function click_handler() {
-    		return /*click_handler*/ ctx[6](/*clue*/ ctx[13]);
+    		return /*click_handler*/ ctx[6](/*clue*/ ctx[13], /*categoryIndex*/ ctx[10], /*clueIndex*/ ctx[15]);
     	}
 
     	const block = {
@@ -1377,8 +1731,12 @@ var app = (function () {
     			div = element("div");
     			t0 = text("$");
     			t1 = text(t1_value);
-    			attr_dev(div, "class", "jeopardy-board-clue svelte-8rlv1h");
-    			add_location(div, file$2, 141, 12, 3253);
+
+    			attr_dev(div, "class", div_class_value = "" + (null_to_empty(/*clue*/ ctx[13].answered
+    			? "jeopardy-board-clue jeopardy-board-clue--disabled"
+    			: "jeopardy-board-clue") + " svelte-1qnnebj"));
+
+    			add_location(div, file$3, 147, 12, 3516);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -1393,6 +1751,12 @@ var app = (function () {
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
     			if (dirty & /*categories, clueRows*/ 3 && t1_value !== (t1_value = /*clue*/ ctx[13].price + "")) set_data_dev(t1, t1_value);
+
+    			if (dirty & /*categories, clueRows*/ 3 && div_class_value !== (div_class_value = "" + (null_to_empty(/*clue*/ ctx[13].answered
+    			? "jeopardy-board-clue jeopardy-board-clue--disabled"
+    			: "jeopardy-board-clue") + " svelte-1qnnebj"))) {
+    				attr_dev(div, "class", div_class_value);
+    			}
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div);
@@ -1405,14 +1769,14 @@ var app = (function () {
     		block,
     		id: create_each_block_1.name,
     		type: "each",
-    		source: "(141:10) {#each categories[categoryIndex].clues as clue}",
+    		source: "(147:10) {#each categories[categoryIndex].clues as clue, clueIndex}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (139:6) {#each clueRows as categoryIndex}
+    // (145:6) {#each clueRows as categoryIndex}
     function create_each_block(ctx) {
     	let div;
     	let t;
@@ -1433,8 +1797,8 @@ var app = (function () {
     			}
 
     			t = space();
-    			attr_dev(div, "class", "jeopardy-board-clues svelte-8rlv1h");
-    			add_location(div, file$2, 139, 8, 3148);
+    			attr_dev(div, "class", "jeopardy-board-clues svelte-1qnnebj");
+    			add_location(div, file$3, 145, 8, 3400);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -1446,7 +1810,7 @@ var app = (function () {
     			append_dev(div, t);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*setCurrentClue, categories, clueRows*/ 19) {
+    			if (dirty & /*categories, clueRows, setCurrentClue*/ 19) {
     				each_value_1 = /*categories*/ ctx[0][/*categoryIndex*/ ctx[10]].clues;
     				validate_each_argument(each_value_1);
     				let i;
@@ -1480,59 +1844,122 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(139:6) {#each clueRows as categoryIndex}",
+    		source: "(145:6) {#each clueRows as categoryIndex}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (152:2) {#if Boolean(showSingleClue)}
-    function create_if_block$1(ctx) {
+    // (162:2) {#if Boolean(showSingleClue)}
+    function create_if_block$2(ctx) {
     	let div;
-    	let t_value = /*currentClue*/ ctx[2].answer + "";
-    	let t;
-    	let mounted;
-    	let dispose;
+    	let clue;
+    	let div_transition;
+    	let current;
+
+    	const clue_spread_levels = [
+    		{
+    			closeCurrentClue: /*closeCurrentClue*/ ctx[5]
+    		},
+    		/*currentClue*/ ctx[2]
+    	];
+
+    	let clue_props = {};
+
+    	for (let i = 0; i < clue_spread_levels.length; i += 1) {
+    		clue_props = assign(clue_props, clue_spread_levels[i]);
+    	}
+
+    	clue = new Clue({ props: clue_props, $$inline: true });
 
     	const block = {
     		c: function create() {
     			div = element("div");
-    			t = text(t_value);
-    			attr_dev(div, "class", "jeopardy-clue-single svelte-8rlv1h");
-    			add_location(div, file$2, 152, 4, 3503);
+    			create_component(clue.$$.fragment);
+    			attr_dev(div, "class", "jeopardy-clue--absolute svelte-1qnnebj");
+    			add_location(div, file$3, 162, 4, 3940);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
-    			append_dev(div, t);
-
-    			if (!mounted) {
-    				dispose = listen_dev(div, "click", /*click_handler_1*/ ctx[7], false, false, false);
-    				mounted = true;
-    			}
+    			mount_component(clue, div, null);
+    			current = true;
     		},
-    		p: function update(ctx, dirty) {
-    			if (dirty & /*currentClue*/ 4 && t_value !== (t_value = /*currentClue*/ ctx[2].answer + "")) set_data_dev(t, t_value);
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+
+    			const clue_changes = (dirty & /*closeCurrentClue, currentClue*/ 36)
+    			? get_spread_update(clue_spread_levels, [
+    					dirty & /*closeCurrentClue*/ 32 && {
+    						closeCurrentClue: /*closeCurrentClue*/ ctx[5]
+    					},
+    					dirty & /*currentClue*/ 4 && get_spread_object(/*currentClue*/ ctx[2])
+    				])
+    			: {};
+
+    			clue.$set(clue_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(clue.$$.fragment, local);
+
+    			add_render_callback(() => {
+    				if (!div_transition) div_transition = create_bidirectional_transition(
+    					div,
+    					scale,
+    					{
+    						duration: 250,
+    						delay: 100,
+    						opacity: 0.1,
+    						start: 0.1,
+    						easing: quintOut
+    					},
+    					true
+    				);
+
+    				div_transition.run(1);
+    			});
+
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(clue.$$.fragment, local);
+
+    			if (!div_transition) div_transition = create_bidirectional_transition(
+    				div,
+    				scale,
+    				{
+    					duration: 250,
+    					delay: 100,
+    					opacity: 0.1,
+    					start: 0.1,
+    					easing: quintOut
+    				},
+    				false
+    			);
+
+    			div_transition.run(0);
+    			current = false;
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div);
-    			mounted = false;
-    			dispose();
+    			destroy_component(clue);
+    			if (detaching && div_transition) div_transition.end();
     		}
     	};
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block$1.name,
+    		id: create_if_block$2.name,
     		type: "if",
-    		source: "(152:2) {#if Boolean(showSingleClue)}",
+    		source: "(162:2) {#if Boolean(showSingleClue)}",
     		ctx
     	});
 
     	return block;
     }
 
-    function create_fragment$2(ctx) {
+    function create_fragment$3(ctx) {
     	let div3;
     	let div2;
     	let div0;
@@ -1540,6 +1967,7 @@ var app = (function () {
     	let div1;
     	let t1;
     	let show_if = Boolean(/*showSingleClue*/ ctx[3]);
+    	let current;
     	let each_value_2 = /*categories*/ ctx[0];
     	validate_each_argument(each_value_2);
     	let each_blocks_1 = [];
@@ -1556,7 +1984,7 @@ var app = (function () {
     		each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
     	}
 
-    	let if_block = show_if && create_if_block$1(ctx);
+    	let if_block = show_if && create_if_block$2(ctx);
 
     	const block = {
     		c: function create() {
@@ -1577,14 +2005,14 @@ var app = (function () {
 
     			t1 = space();
     			if (if_block) if_block.c();
-    			attr_dev(div0, "class", "jeopardy-board-categories svelte-8rlv1h");
-    			add_location(div0, file$2, 131, 4, 2889);
-    			attr_dev(div1, "class", "jeopardy-board-columns svelte-8rlv1h");
-    			add_location(div1, file$2, 137, 4, 3063);
-    			attr_dev(div2, "class", "jeopardy-board svelte-8rlv1h");
-    			add_location(div2, file$2, 130, 2, 2856);
-    			attr_dev(div3, "class", "jeopardy-game svelte-8rlv1h");
-    			add_location(div3, file$2, 129, 0, 2826);
+    			attr_dev(div0, "class", "jeopardy-board-categories svelte-1qnnebj");
+    			add_location(div0, file$3, 137, 4, 3141);
+    			attr_dev(div1, "class", "jeopardy-board-columns svelte-1qnnebj");
+    			add_location(div1, file$3, 143, 4, 3315);
+    			attr_dev(div2, "class", "jeopardy-board svelte-1qnnebj");
+    			add_location(div2, file$3, 136, 2, 3108);
+    			attr_dev(div3, "class", "jeopardy-game svelte-1qnnebj");
+    			add_location(div3, file$3, 135, 0, 3078);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1607,6 +2035,7 @@ var app = (function () {
 
     			append_dev(div3, t1);
     			if (if_block) if_block.m(div3, null);
+    			current = true;
     		},
     		p: function update(ctx, [dirty]) {
     			if (dirty & /*categories*/ 1) {
@@ -1662,18 +2091,35 @@ var app = (function () {
     			if (show_if) {
     				if (if_block) {
     					if_block.p(ctx, dirty);
+
+    					if (dirty & /*showSingleClue*/ 8) {
+    						transition_in(if_block, 1);
+    					}
     				} else {
-    					if_block = create_if_block$1(ctx);
+    					if_block = create_if_block$2(ctx);
     					if_block.c();
+    					transition_in(if_block, 1);
     					if_block.m(div3, null);
     				}
     			} else if (if_block) {
-    				if_block.d(1);
-    				if_block = null;
+    				group_outros();
+
+    				transition_out(if_block, 1, 1, () => {
+    					if_block = null;
+    				});
+
+    				check_outros();
     			}
     		},
-    		i: noop,
-    		o: noop,
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(if_block);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(if_block);
+    			current = false;
+    		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div3);
     			destroy_each(each_blocks_1, detaching);
@@ -1684,7 +2130,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_fragment$2.name,
+    		id: create_fragment$3.name,
     		type: "component",
     		source: "",
     		ctx
@@ -1693,19 +2139,21 @@ var app = (function () {
     	return block;
     }
 
-    function instance$2($$self, $$props, $$invalidate) {
+    function instance$3($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots("Game", slots, []);
     	let data_promise;
     	let categories = [];
     	let clueRows = [];
     	let currentClue;
+    	let currentClueLocation;
     	let showSingleClue = false;
-    	console.log("showSingleClue", showSingleClue);
 
     	const loadGame = async () => {
     		const res = await fetch(`/data.json`);
     		$$invalidate(0, categories = await res.json());
+
+    		// gameRound.initialize(categories);
     		$$invalidate(1, clueRows = new Array(categories.length).fill().map((_, i) => i));
     	};
 
@@ -1713,39 +2161,42 @@ var app = (function () {
     		data_promise = loadGame();
     	});
 
-    	const setCurrentClue = clue => {
+    	const setCurrentClue = (clue, clueLocation) => {
     		$$invalidate(2, currentClue = clue);
+    		currentClueLocation = clueLocation;
     		$$invalidate(3, showSingleClue = true);
     	};
 
     	const closeCurrentClue = () => {
+    		// gameRound.setAnswered(currentClueLocation);
+    		const { categoryIndex, clueIndex } = currentClueLocation;
+
+    		$$invalidate(0, categories[categoryIndex].clues[clueIndex].answered = true, categories);
     		$$invalidate(3, showSingleClue = false);
     	};
 
     	const writable_props = [];
 
     	Object.keys($$props).forEach(key => {
-    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console_1.warn(`<Game> was created with unknown prop '${key}'`);
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Game> was created with unknown prop '${key}'`);
     	});
 
-    	const click_handler = clue => setCurrentClue(clue);
-    	const click_handler_1 = () => closeCurrentClue();
+    	const click_handler = (clue, categoryIndex, clueIndex) => !clue.answered && setCurrentClue(clue, { categoryIndex, clueIndex });
 
     	$$self.$capture_state = () => ({
     		onMount,
     		createEventDispatcher,
-    		fly,
-    		scale,
-    		crossfade,
     		eases,
+    		scale,
+    		quintOut,
     		Card,
-    		sleep,
-    		pick_random,
-    		load_image,
+    		Clue,
+    		gameRound,
     		data_promise,
     		categories,
     		clueRows,
     		currentClue,
+    		currentClueLocation,
     		showSingleClue,
     		loadGame,
     		setCurrentClue,
@@ -1757,6 +2208,7 @@ var app = (function () {
     		if ("categories" in $$props) $$invalidate(0, categories = $$props.categories);
     		if ("clueRows" in $$props) $$invalidate(1, clueRows = $$props.clueRows);
     		if ("currentClue" in $$props) $$invalidate(2, currentClue = $$props.currentClue);
+    		if ("currentClueLocation" in $$props) currentClueLocation = $$props.currentClueLocation;
     		if ("showSingleClue" in $$props) $$invalidate(3, showSingleClue = $$props.showSingleClue);
     	};
 
@@ -1771,23 +2223,36 @@ var app = (function () {
     		showSingleClue,
     		setCurrentClue,
     		closeCurrentClue,
-    		click_handler,
-    		click_handler_1
+    		click_handler
     	];
     }
 
     class Game extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$2, create_fragment$2, safe_not_equal, {});
+    		init(this, options, instance$3, create_fragment$3, safe_not_equal, {});
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
     			tagName: "Game",
     			options,
-    			id: create_fragment$2.name
+    			id: create_fragment$3.name
     		});
     	}
+    }
+
+    function pick_random(array) {
+      const index = Math.floor(array.length * Math.random());
+      return array[index];
+    }
+
+    function load_image(src) {
+      return new Promise((fulfil, reject) => {
+        const img = new Image();
+        img.onload = () => fulfil();
+        img.onerror = reject;
+        img.src = src;
+      });
     }
 
     const ROUNDS_PER_GAME = 10;
@@ -1846,7 +2311,7 @@ var app = (function () {
     }
 
     /* src/App.svelte generated by Svelte v3.31.0 */
-    const file$3 = "src/App.svelte";
+    const file$4 = "src/App.svelte";
 
     // (61:32) 
     function create_if_block_1(ctx) {
@@ -1890,7 +2355,7 @@ var app = (function () {
     }
 
     // (57:2) {#if state === 'welcome'}
-    function create_if_block$2(ctx) {
+    function create_if_block$3(ctx) {
     	let article;
     	let welcome;
     	let current;
@@ -1902,7 +2367,7 @@ var app = (function () {
     			article = element("article");
     			create_component(welcome.$$.fragment);
     			attr_dev(article, "class", "svelte-imzktp");
-    			add_location(article, file$3, 57, 4, 1429);
+    			add_location(article, file$4, 57, 4, 1429);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, article, anchor);
@@ -1927,7 +2392,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block$2.name,
+    		id: create_if_block$3.name,
     		type: "if",
     		source: "(57:2) {#if state === 'welcome'}",
     		ctx
@@ -1936,12 +2401,12 @@ var app = (function () {
     	return block;
     }
 
-    function create_fragment$3(ctx) {
+    function create_fragment$4(ctx) {
     	let main;
     	let current_block_type_index;
     	let if_block;
     	let current;
-    	const if_block_creators = [create_if_block$2, create_if_block_1];
+    	const if_block_creators = [create_if_block$3, create_if_block_1];
     	const if_blocks = [];
 
     	function select_block_type(ctx, dirty) {
@@ -1958,7 +2423,7 @@ var app = (function () {
     		c: function create() {
     			main = element("main");
     			if (if_block) if_block.c();
-    			add_location(main, file$3, 55, 0, 1390);
+    			add_location(main, file$4, 55, 0, 1390);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -2028,7 +2493,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_fragment$3.name,
+    		id: create_fragment$4.name,
     		type: "component",
     		source: "",
     		ctx
@@ -2037,7 +2502,7 @@ var app = (function () {
     	return block;
     }
 
-    function instance$3($$self, $$props, $$invalidate) {
+    function instance$4($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots("App", slots, []);
     	let celebs_promise;
@@ -2117,13 +2582,13 @@ var app = (function () {
     class App extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$3, create_fragment$3, safe_not_equal, {});
+    		init(this, options, instance$4, create_fragment$4, safe_not_equal, {});
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
     			tagName: "App",
     			options,
-    			id: create_fragment$3.name
+    			id: create_fragment$4.name
     		});
     	}
     }
