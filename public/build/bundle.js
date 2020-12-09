@@ -1797,15 +1797,51 @@ var app = (function () {
     	return block;
     }
 
-    // (160:10) {#each $gameRound[categoryIndex].clues as clue, clueIndex}
-    function create_each_block_1(ctx) {
-    	let div;
+    // (167:14) {#if !clue.answered}
+    function create_if_block_1(ctx) {
+    	let span;
     	let t0;
     	let t1_value = /*clue*/ ctx[13].price + "";
     	let t1;
+
+    	const block = {
+    		c: function create() {
+    			span = element("span");
+    			t0 = text("$");
+    			t1 = text(t1_value);
+    			add_location(span, file$3, 166, 34, 4126);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, span, anchor);
+    			append_dev(span, t0);
+    			append_dev(span, t1);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*$gameRound*/ 4 && t1_value !== (t1_value = /*clue*/ ctx[13].price + "")) set_data_dev(t1, t1_value);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(span);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_1.name,
+    		type: "if",
+    		source: "(167:14) {#if !clue.answered}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (160:10) {#each $gameRound[categoryIndex].clues as clue, clueIndex}
+    function create_each_block_1(ctx) {
+    	let div;
     	let div_class_value;
     	let mounted;
     	let dispose;
+    	let if_block = !/*clue*/ ctx[13].answered && create_if_block_1(ctx);
 
     	function click_handler() {
     		return /*click_handler*/ ctx[5](/*clue*/ ctx[13], /*categoryIndex*/ ctx[12], /*clueIndex*/ ctx[15]);
@@ -1814,8 +1850,7 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			div = element("div");
-    			t0 = text("$");
-    			t1 = text(t1_value);
+    			if (if_block) if_block.c();
 
     			attr_dev(div, "class", div_class_value = "" + (null_to_empty(/*clue*/ ctx[13].answered
     			? "jeopardy-board-clue jeopardy-board-clue--disabled"
@@ -1825,8 +1860,7 @@ var app = (function () {
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
-    			append_dev(div, t0);
-    			append_dev(div, t1);
+    			if (if_block) if_block.m(div, null);
 
     			if (!mounted) {
     				dispose = listen_dev(div, "click", click_handler, false, false, false);
@@ -1835,7 +1869,19 @@ var app = (function () {
     		},
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
-    			if (dirty & /*$gameRound*/ 4 && t1_value !== (t1_value = /*clue*/ ctx[13].price + "")) set_data_dev(t1, t1_value);
+
+    			if (!/*clue*/ ctx[13].answered) {
+    				if (if_block) {
+    					if_block.p(ctx, dirty);
+    				} else {
+    					if_block = create_if_block_1(ctx);
+    					if_block.c();
+    					if_block.m(div, null);
+    				}
+    			} else if (if_block) {
+    				if_block.d(1);
+    				if_block = null;
+    			}
 
     			if (dirty & /*$gameRound*/ 4 && div_class_value !== (div_class_value = "" + (null_to_empty(/*clue*/ ctx[13].answered
     			? "jeopardy-board-clue jeopardy-board-clue--disabled"
@@ -1845,6 +1891,7 @@ var app = (function () {
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div);
+    			if (if_block) if_block.d();
     			mounted = false;
     			dispose();
     		}
@@ -1963,7 +2010,7 @@ var app = (function () {
     			div = element("div");
     			create_component(clue.$$.fragment);
     			attr_dev(div, "class", "jeopardy-clue--absolute svelte-1qnnebj");
-    			add_location(div, file$3, 175, 4, 4243);
+    			add_location(div, file$3, 175, 4, 4281);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -2409,7 +2456,7 @@ var app = (function () {
     const file$4 = "src/App.svelte";
 
     // (61:32) 
-    function create_if_block_1(ctx) {
+    function create_if_block_1$1(ctx) {
     	let game;
     	let current;
     	game = new Game({ $$inline: true });
@@ -2440,7 +2487,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_1.name,
+    		id: create_if_block_1$1.name,
     		type: "if",
     		source: "(61:32) ",
     		ctx
@@ -2501,7 +2548,7 @@ var app = (function () {
     	let current_block_type_index;
     	let if_block;
     	let current;
-    	const if_block_creators = [create_if_block$3, create_if_block_1];
+    	const if_block_creators = [create_if_block$3, create_if_block_1$1];
     	const if_blocks = [];
 
     	function select_block_type(ctx, dirty) {

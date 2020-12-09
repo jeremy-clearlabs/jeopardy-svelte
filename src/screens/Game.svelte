@@ -164,7 +164,7 @@
                   categoryIndex,
                   clueIndex,
                 })}>
-              ${clue.price}
+              {#if !clue.answered}<span>${clue.price}</span>{/if}
             </div>
           {/each}
         </div>
