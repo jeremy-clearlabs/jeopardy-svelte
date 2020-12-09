@@ -1,17 +1,15 @@
-import { writable } from 'svelte/store';
+import { writable, derived } from 'svelte/store';
 
 function gameRoundStatus() {
   const { subscribe, set, update } = writable([]);
 
   return {
     subscribe,
-    initialize: (categories) => update(() => categories),
+    initialize: (categories) => set(categories),
     setAnswered: ({ categoryIndex, clueIndex }) =>
       update((categories) => {
-				console.log(categoryIndex, clueIndex)
-				console.log(categories)
-				categories[categoryIndex].clues[clueIndex].answered = true;
-				return categories;
+        categories[categoryIndex].clues[clueIndex].answered = true;
+        return categories;
       }),
     allAnswered: () => update((n) => n - 1),
     reset: () => set([]),
@@ -19,3 +17,12 @@ function gameRoundStatus() {
 }
 
 export const gameRound = gameRoundStatus();
+
+export const allAnswered = derived(
+  gameRoundStatus,
+  ($gameRoundStatus) =>
+    $gameRoundStatus.length > 0 &&
+    $gameRoundStatus.every((category) =>
+      category.clues.every((clue) => clue.answered)
+    )
+);

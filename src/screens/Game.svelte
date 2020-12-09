@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from 'svelte';
+  import { onMount, afterUpdate } from 'svelte';
   import { createEventDispatcher } from 'svelte';
   import * as eases from 'svelte/easing';
   import { scale } from 'svelte/transition';
@@ -10,21 +10,34 @@
   import { gameRound } from '../stores/gameRound.js';
 
   let data_promise;
-  let categories = [];
-  let clueRows = [];
+  // let categories = [];
+  // let clueRows = [];
   let currentClue;
   let currentClueLocation;
   let showSingleClue = false;
+  let gameOver = false;
 
   const loadGame = async () => {
     const res = await fetch(`/data.json`);
-    categories = await res.json();
-    // gameRound.initialize(categories);
-    clueRows = new Array(categories.length).fill().map((_, i) => i);
+    const categories = await res.json();
+    gameRound.initialize(categories);
+    // clueRows = new Array(categories.length).fill().map((_, i) => i);
   };
 
   onMount(() => {
     data_promise = loadGame();
+  });
+
+  afterUpdate(() => {
+    if (
+      $gameRound.length > 0 &&
+      $gameRound.every((category) =>
+        category.clues.every((clue) => clue.answered)
+      )
+    ) {
+      gameOver = true;
+      console.log('gameOver', gameOver);
+    }
   });
 
   const setCurrentClue = (clue, clueLocation) => {
@@ -34,9 +47,9 @@
   };
 
   const closeCurrentClue = () => {
-    // gameRound.setAnswered(currentClueLocation);
-    const { categoryIndex, clueIndex } = currentClueLocation;
-    categories[categoryIndex].clues[clueIndex].answered = true;
+    gameRound.setAnswered(currentClueLocation);
+    // const { categoryIndex, clueIndex } = currentClueLocation;
+    // categories[categoryIndex].clues[clueIndex].answered = true;
     showSingleClue = false;
   };
 
@@ -136,15 +149,15 @@
 <div class="jeopardy-game">
   <div class="jeopardy-board">
     <div class="jeopardy-board-categories">
-      {#each categories as category}
+      {#each $gameRound as category}
         <div class="jeopardy-board-category">{category.name}</div>
       {/each}
     </div>
 
     <div class="jeopardy-board-columns">
-      {#each clueRows as categoryIndex}
+      {#each $gameRound as _, categoryIndex}
         <div class="jeopardy-board-clues">
-          {#each categories[categoryIndex].clues as clue, clueIndex}
+          {#each $gameRound[categoryIndex].clues as clue, clueIndex}
             <div
               class={clue.answered ? 'jeopardy-board-clue jeopardy-board-clue--disabled' : 'jeopardy-board-clue'}
               on:click={() => !clue.answered && setCurrentClue(clue, {
