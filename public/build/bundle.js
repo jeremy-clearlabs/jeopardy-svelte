@@ -1743,43 +1743,43 @@ var app = (function () {
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[10] = list[i];
-    	child_ctx[12] = i;
+    	child_ctx[12] = list[i];
+    	child_ctx[14] = i;
     	return child_ctx;
     }
 
     function get_each_context_1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[13] = list[i];
-    	child_ctx[15] = i;
+    	child_ctx[15] = list[i];
+    	child_ctx[17] = i;
     	return child_ctx;
     }
 
     function get_each_context_2(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[16] = list[i];
+    	child_ctx[18] = list[i];
     	return child_ctx;
     }
 
-    // (152:6) {#each $gameRound as category}
+    // (161:6) {#each $gameRound as category}
     function create_each_block_2(ctx) {
     	let div;
-    	let t_value = /*category*/ ctx[16].name + "";
+    	let t_value = /*category*/ ctx[18].name + "";
     	let t;
 
     	const block = {
     		c: function create() {
     			div = element("div");
     			t = text(t_value);
-    			attr_dev(div, "class", "jeopardy-board-category svelte-1qnnebj");
-    			add_location(div, file$3, 152, 8, 3524);
+    			attr_dev(div, "class", "jeopardy-board-category svelte-hecbt4");
+    			add_location(div, file$3, 161, 8, 3624);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
     			append_dev(div, t);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*$gameRound*/ 4 && t_value !== (t_value = /*category*/ ctx[16].name + "")) set_data_dev(t, t_value);
+    			if (dirty & /*$gameRound*/ 4 && t_value !== (t_value = /*category*/ ctx[18].name + "")) set_data_dev(t, t_value);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div);
@@ -1790,18 +1790,18 @@ var app = (function () {
     		block,
     		id: create_each_block_2.name,
     		type: "each",
-    		source: "(152:6) {#each $gameRound as category}",
+    		source: "(161:6) {#each $gameRound as category}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (167:14) {#if !clue.answered}
+    // (176:14) {#if !clue.answered}
     function create_if_block_1(ctx) {
     	let span;
     	let t0;
-    	let t1_value = /*clue*/ ctx[13].price + "";
+    	let t1_value = /*clue*/ ctx[15].price + "";
     	let t1;
 
     	const block = {
@@ -1809,7 +1809,7 @@ var app = (function () {
     			span = element("span");
     			t0 = text("$");
     			t1 = text(t1_value);
-    			add_location(span, file$3, 166, 34, 4126);
+    			add_location(span, file$3, 175, 34, 4226);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -1817,7 +1817,7 @@ var app = (function () {
     			append_dev(span, t1);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*$gameRound*/ 4 && t1_value !== (t1_value = /*clue*/ ctx[13].price + "")) set_data_dev(t1, t1_value);
+    			if (dirty & /*$gameRound*/ 4 && t1_value !== (t1_value = /*clue*/ ctx[15].price + "")) set_data_dev(t1, t1_value);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(span);
@@ -1828,23 +1828,23 @@ var app = (function () {
     		block,
     		id: create_if_block_1.name,
     		type: "if",
-    		source: "(167:14) {#if !clue.answered}",
+    		source: "(176:14) {#if !clue.answered}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (160:10) {#each $gameRound[categoryIndex].clues as clue, clueIndex}
+    // (169:10) {#each $gameRound[categoryIndex].clues as clue, clueIndex}
     function create_each_block_1(ctx) {
     	let div;
     	let div_class_value;
     	let mounted;
     	let dispose;
-    	let if_block = !/*clue*/ ctx[13].answered && create_if_block_1(ctx);
+    	let if_block = !/*clue*/ ctx[15].answered && create_if_block_1(ctx);
 
     	function click_handler() {
-    		return /*click_handler*/ ctx[5](/*clue*/ ctx[13], /*categoryIndex*/ ctx[12], /*clueIndex*/ ctx[15]);
+    		return /*click_handler*/ ctx[6](/*clue*/ ctx[15], /*categoryIndex*/ ctx[14], /*clueIndex*/ ctx[17]);
     	}
 
     	const block = {
@@ -1852,11 +1852,11 @@ var app = (function () {
     			div = element("div");
     			if (if_block) if_block.c();
 
-    			attr_dev(div, "class", div_class_value = "" + (null_to_empty(/*clue*/ ctx[13].answered
+    			attr_dev(div, "class", div_class_value = "" + (null_to_empty(/*clue*/ ctx[15].answered
     			? "jeopardy-board-clue jeopardy-board-clue--disabled"
-    			: "jeopardy-board-clue") + " svelte-1qnnebj"));
+    			: "jeopardy-board-clue") + " svelte-hecbt4"));
 
-    			add_location(div, file$3, 160, 12, 3819);
+    			add_location(div, file$3, 169, 12, 3919);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -1870,7 +1870,7 @@ var app = (function () {
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
 
-    			if (!/*clue*/ ctx[13].answered) {
+    			if (!/*clue*/ ctx[15].answered) {
     				if (if_block) {
     					if_block.p(ctx, dirty);
     				} else {
@@ -1883,9 +1883,9 @@ var app = (function () {
     				if_block = null;
     			}
 
-    			if (dirty & /*$gameRound*/ 4 && div_class_value !== (div_class_value = "" + (null_to_empty(/*clue*/ ctx[13].answered
+    			if (dirty & /*$gameRound*/ 4 && div_class_value !== (div_class_value = "" + (null_to_empty(/*clue*/ ctx[15].answered
     			? "jeopardy-board-clue jeopardy-board-clue--disabled"
-    			: "jeopardy-board-clue") + " svelte-1qnnebj"))) {
+    			: "jeopardy-board-clue") + " svelte-hecbt4"))) {
     				attr_dev(div, "class", div_class_value);
     			}
     		},
@@ -1901,18 +1901,18 @@ var app = (function () {
     		block,
     		id: create_each_block_1.name,
     		type: "each",
-    		source: "(160:10) {#each $gameRound[categoryIndex].clues as clue, clueIndex}",
+    		source: "(169:10) {#each $gameRound[categoryIndex].clues as clue, clueIndex}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (158:6) {#each $gameRound as _, categoryIndex}
+    // (167:6) {#each $gameRound as _, categoryIndex}
     function create_each_block(ctx) {
     	let div;
     	let t;
-    	let each_value_1 = /*$gameRound*/ ctx[2][/*categoryIndex*/ ctx[12]].clues;
+    	let each_value_1 = /*$gameRound*/ ctx[2][/*categoryIndex*/ ctx[14]].clues;
     	validate_each_argument(each_value_1);
     	let each_blocks = [];
 
@@ -1929,8 +1929,8 @@ var app = (function () {
     			}
 
     			t = space();
-    			attr_dev(div, "class", "jeopardy-board-clues svelte-1qnnebj");
-    			add_location(div, file$3, 158, 8, 3703);
+    			attr_dev(div, "class", "jeopardy-board-clues svelte-hecbt4");
+    			add_location(div, file$3, 167, 8, 3803);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -1943,7 +1943,7 @@ var app = (function () {
     		},
     		p: function update(ctx, dirty) {
     			if (dirty & /*$gameRound, setCurrentClue*/ 12) {
-    				each_value_1 = /*$gameRound*/ ctx[2][/*categoryIndex*/ ctx[12]].clues;
+    				each_value_1 = /*$gameRound*/ ctx[2][/*categoryIndex*/ ctx[14]].clues;
     				validate_each_argument(each_value_1);
     				let i;
 
@@ -1976,14 +1976,14 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(158:6) {#each $gameRound as _, categoryIndex}",
+    		source: "(167:6) {#each $gameRound as _, categoryIndex}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (175:2) {#if Boolean(showSingleClue)}
+    // (184:2) {#if Boolean(showSingleClue)}
     function create_if_block$2(ctx) {
     	let div;
     	let clue;
@@ -2009,8 +2009,8 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(clue.$$.fragment);
-    			attr_dev(div, "class", "jeopardy-clue--absolute svelte-1qnnebj");
-    			add_location(div, file$3, 175, 4, 4281);
+    			attr_dev(div, "class", "jeopardy-clue--absolute svelte-hecbt4");
+    			add_location(div, file$3, 184, 4, 4381);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -2084,7 +2084,7 @@ var app = (function () {
     		block,
     		id: create_if_block$2.name,
     		type: "if",
-    		source: "(175:2) {#if Boolean(showSingleClue)}",
+    		source: "(184:2) {#if Boolean(showSingleClue)}",
     		ctx
     	});
 
@@ -2137,14 +2137,14 @@ var app = (function () {
 
     			t1 = space();
     			if (if_block) if_block.c();
-    			attr_dev(div0, "class", "jeopardy-board-categories svelte-1qnnebj");
-    			add_location(div0, file$3, 150, 4, 3439);
-    			attr_dev(div1, "class", "jeopardy-board-columns svelte-1qnnebj");
-    			add_location(div1, file$3, 156, 4, 3613);
-    			attr_dev(div2, "class", "jeopardy-board svelte-1qnnebj");
-    			add_location(div2, file$3, 149, 2, 3406);
-    			attr_dev(div3, "class", "jeopardy-game svelte-1qnnebj");
-    			add_location(div3, file$3, 148, 0, 3376);
+    			attr_dev(div0, "class", "jeopardy-board-categories svelte-hecbt4");
+    			add_location(div0, file$3, 159, 4, 3539);
+    			attr_dev(div1, "class", "jeopardy-board-columns svelte-hecbt4");
+    			add_location(div1, file$3, 165, 4, 3713);
+    			attr_dev(div2, "class", "jeopardy-board svelte-hecbt4");
+    			add_location(div2, file$3, 158, 2, 3506);
+    			attr_dev(div3, "class", "jeopardy-game svelte-hecbt4");
+    			add_location(div3, file$3, 157, 0, 3476);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -2277,32 +2277,48 @@ var app = (function () {
     	component_subscribe($$self, gameRound, $$value => $$invalidate(2, $gameRound = $$value));
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots("Game", slots, []);
+    	let { currentRound } = $$props;
+    	const dispatch = createEventDispatcher();
     	let data_promise;
-
-    	// let categories = [];
-    	// let clueRows = [];
     	let currentClue;
-
     	let currentClueLocation;
     	let showSingleClue = false;
-    	let gameOver = false;
-
-    	const loadGame = async () => {
-    		const res = await fetch(`/data.json`);
-    		const categories = await res.json();
-    		gameRound.initialize(categories);
-    	}; // clueRows = new Array(categories.length).fill().map((_, i) => i);
 
     	onMount(() => {
+    		console.log("mount new");
     		data_promise = loadGame();
     	});
 
     	afterUpdate(() => {
     		if ($gameRound.length > 0 && $gameRound.every(category => category.clues.every(clue => clue.answered))) {
-    			gameOver = true;
-    			console.log("gameOver", gameOver);
+    			roundOver();
     		}
     	});
+
+    	const loadGame = async () => {
+    		let gameData;
+
+    		if (currentRound === "jeopardy") {
+    			gameData = "/jeopardy.json";
+    		} else if (currentRound === "doubleJeopardy") {
+    			gameData = "/doubleJeopardy.json";
+    		} else {
+    			gameData = "/finalJeopardy.json";
+    		}
+
+    		const res = await fetch(gameData);
+    		const categories = await res.json();
+    		gameRound.initialize(categories);
+    	};
+
+    	const roundOver = () => {
+    		$$invalidate(0, currentClue = null);
+    		currentClueLocation = null;
+    		data_promise = null;
+    		$$invalidate(1, showSingleClue = false);
+    		gameRound.reset();
+    		dispatch("next");
+    	};
 
     	const setCurrentClue = (clue, clueLocation) => {
     		$$invalidate(0, currentClue = clue);
@@ -2312,19 +2328,20 @@ var app = (function () {
 
     	const closeCurrentClue = () => {
     		gameRound.setAnswered(currentClueLocation);
-
-    		// const { categoryIndex, clueIndex } = currentClueLocation;
-    		// categories[categoryIndex].clues[clueIndex].answered = true;
     		$$invalidate(1, showSingleClue = false);
     	};
 
-    	const writable_props = [];
+    	const writable_props = ["currentRound"];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console_1.warn(`<Game> was created with unknown prop '${key}'`);
     	});
 
     	const click_handler = (clue, categoryIndex, clueIndex) => !clue.answered && setCurrentClue(clue, { categoryIndex, clueIndex });
+
+    	$$self.$$set = $$props => {
+    		if ("currentRound" in $$props) $$invalidate(5, currentRound = $$props.currentRound);
+    	};
 
     	$$self.$capture_state = () => ({
     		onMount,
@@ -2336,23 +2353,25 @@ var app = (function () {
     		Card,
     		Clue,
     		gameRound,
+    		currentRound,
+    		dispatch,
     		data_promise,
     		currentClue,
     		currentClueLocation,
     		showSingleClue,
-    		gameOver,
     		loadGame,
+    		roundOver,
     		setCurrentClue,
     		closeCurrentClue,
     		$gameRound
     	});
 
     	$$self.$inject_state = $$props => {
+    		if ("currentRound" in $$props) $$invalidate(5, currentRound = $$props.currentRound);
     		if ("data_promise" in $$props) data_promise = $$props.data_promise;
     		if ("currentClue" in $$props) $$invalidate(0, currentClue = $$props.currentClue);
     		if ("currentClueLocation" in $$props) currentClueLocation = $$props.currentClueLocation;
     		if ("showSingleClue" in $$props) $$invalidate(1, showSingleClue = $$props.showSingleClue);
-    		if ("gameOver" in $$props) gameOver = $$props.gameOver;
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -2365,6 +2384,7 @@ var app = (function () {
     		$gameRound,
     		setCurrentClue,
     		closeCurrentClue,
+    		currentRound,
     		click_handler
     	];
     }
@@ -2372,7 +2392,7 @@ var app = (function () {
     class Game extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$3, create_fragment$3, safe_not_equal, {});
+    		init(this, options, instance$3, create_fragment$3, safe_not_equal, { currentRound: 5 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -2380,87 +2400,40 @@ var app = (function () {
     			options,
     			id: create_fragment$3.name
     		});
-    	}
-    }
 
-    function pick_random(array) {
-      const index = Math.floor(array.length * Math.random());
-      return array[index];
-    }
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
 
-    function load_image(src) {
-      return new Promise((fulfil, reject) => {
-        const img = new Image();
-        img.onload = () => fulfil();
-        img.onerror = reject;
-        img.src = src;
-      });
-    }
-
-    const ROUNDS_PER_GAME = 10;
-
-    function remove(array, index) {
-    	// if a 'similar' account was picked, there's no
-    	// guarantee that it's in the filtered array
-    	if (index === -1) return;
-
-    	// this is much faster than splicing the array
-    	array[index] = array[array.length - 1];
-    	array.pop();
-    }
-
-    function select(celebs, lookup, category) {
-    	const filtered = celebs.filter(c => {
-    		return c.categories.includes(category);
-    	});
-
-    	const seen = new Set();
-    	const selection = [];
-
-    	let i = ROUNDS_PER_GAME;
-    	while (i--) {
-    		const n = Math.random();
-    		const ai = Math.floor(n * filtered.length);
-    		const a = filtered[ai];
-
-    		// remove a from the array so this person can't be picked again
-    		remove(filtered, ai);
-
-    		let b;
-
-    		// if this celeb has 'similar' celebs, decide whether to pick one
-    		const similar = a.similar.filter(id => !seen.has(id));
-    		if ((similar.length > 0) && (Math.random() < 0.75)) {
-    			const id = pick_random(similar);
-    			b = lookup.get(id);
+    		if (/*currentRound*/ ctx[5] === undefined && !("currentRound" in props)) {
+    			console_1.warn("<Game> was created without expected prop 'currentRound'");
     		}
-
-    		// otherwise pick someone at random
-    		else {
-    			b = pick_random(filtered);
-    		}
-
-    		selection.push({ a, b });
-
-    		seen.add(a.id);
-    		seen.add(b.id);
-
-    		// remove b from the array so this person can't be picked again
-    		remove(filtered, filtered.indexOf(b));
     	}
 
-    	return selection;
+    	get currentRound() {
+    		throw new Error("<Game>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set currentRound(value) {
+    		throw new Error("<Game>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
     }
 
     /* src/App.svelte generated by Svelte v3.31.0 */
+
+    const { console: console_1$1 } = globals;
     const file$4 = "src/App.svelte";
 
-    // (61:32) 
-    function create_if_block_1$1(ctx) {
+    // (49:38) 
+    function create_if_block_3(ctx) {
     	let game;
     	let current;
-    	game = new Game({ $$inline: true });
-    	game.$on("restart", /*restart_handler*/ ctx[2]);
+
+    	game = new Game({
+    			props: { currentRound: /*state*/ ctx[0] },
+    			$$inline: true
+    		});
+
+    	game.$on("next", /*nextGameRound*/ ctx[1]);
 
     	const block = {
     		c: function create() {
@@ -2470,7 +2443,111 @@ var app = (function () {
     			mount_component(game, target, anchor);
     			current = true;
     		},
-    		p: noop,
+    		p: function update(ctx, dirty) {
+    			const game_changes = {};
+    			if (dirty & /*state*/ 1) game_changes.currentRound = /*state*/ ctx[0];
+    			game.$set(game_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(game.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(game.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(game, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_3.name,
+    		type: "if",
+    		source: "(49:38) ",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (47:39) 
+    function create_if_block_2(ctx) {
+    	let game;
+    	let current;
+
+    	game = new Game({
+    			props: { currentRound: /*state*/ ctx[0] },
+    			$$inline: true
+    		});
+
+    	game.$on("next", /*nextGameRound*/ ctx[1]);
+
+    	const block = {
+    		c: function create() {
+    			create_component(game.$$.fragment);
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(game, target, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			const game_changes = {};
+    			if (dirty & /*state*/ 1) game_changes.currentRound = /*state*/ ctx[0];
+    			game.$set(game_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(game.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(game.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(game, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_2.name,
+    		type: "if",
+    		source: "(47:39) ",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (45:33) 
+    function create_if_block_1$1(ctx) {
+    	let game;
+    	let current;
+
+    	game = new Game({
+    			props: { currentRound: /*state*/ ctx[0] },
+    			$$inline: true
+    		});
+
+    	game.$on("next", /*nextGameRound*/ ctx[1]);
+
+    	const block = {
+    		c: function create() {
+    			create_component(game.$$.fragment);
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(game, target, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			const game_changes = {};
+    			if (dirty & /*state*/ 1) game_changes.currentRound = /*state*/ ctx[0];
+    			game.$set(game_changes);
+    		},
     		i: function intro(local) {
     			if (current) return;
     			transition_in(game.$$.fragment, local);
@@ -2489,27 +2566,27 @@ var app = (function () {
     		block,
     		id: create_if_block_1$1.name,
     		type: "if",
-    		source: "(61:32) ",
+    		source: "(45:33) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (57:2) {#if state === 'welcome'}
+    // (41:2) {#if state === 'welcome'}
     function create_if_block$3(ctx) {
     	let article;
     	let welcome;
     	let current;
     	welcome = new Welcome({ $$inline: true });
-    	welcome.$on("start", /*startGame*/ ctx[1]);
+    	welcome.$on("start", /*nextGameRound*/ ctx[1]);
 
     	const block = {
     		c: function create() {
     			article = element("article");
     			create_component(welcome.$$.fragment);
     			attr_dev(article, "class", "svelte-imzktp");
-    			add_location(article, file$4, 57, 4, 1429);
+    			add_location(article, file$4, 41, 4, 849);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, article, anchor);
@@ -2536,7 +2613,7 @@ var app = (function () {
     		block,
     		id: create_if_block$3.name,
     		type: "if",
-    		source: "(57:2) {#if state === 'welcome'}",
+    		source: "(41:2) {#if state === 'welcome'}",
     		ctx
     	});
 
@@ -2548,12 +2625,14 @@ var app = (function () {
     	let current_block_type_index;
     	let if_block;
     	let current;
-    	const if_block_creators = [create_if_block$3, create_if_block_1$1];
+    	const if_block_creators = [create_if_block$3, create_if_block_1$1, create_if_block_2, create_if_block_3];
     	const if_blocks = [];
 
     	function select_block_type(ctx, dirty) {
     		if (/*state*/ ctx[0] === "welcome") return 0;
-    		if (/*state*/ ctx[0] === "playing") return 1;
+    		if (/*state*/ ctx[0] === "jeopardy") return 1;
+    		if (/*state*/ ctx[0] === "doubleJeopardy") return 2;
+    		if (/*state*/ ctx[0] === "finalJeopardy") return 3;
     		return -1;
     	}
 
@@ -2565,7 +2644,7 @@ var app = (function () {
     		c: function create() {
     			main = element("main");
     			if (if_block) if_block.c();
-    			add_location(main, file$4, 55, 0, 1390);
+    			add_location(main, file$4, 39, 0, 810);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -2647,78 +2726,44 @@ var app = (function () {
     function instance$4($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots("App", slots, []);
-    	let celebs_promise;
-    	let state = "welcome"; // 'welcome' or 'playing'
-    	let selection;
+    	let state = "welcome";
 
-    	const startGame = async e => {
-    		// const { celebs, lookup } = await celebs_promise;
-    		// selection = select(celebs, lookup, e.detail.category.slug);
-    		$$invalidate(0, state = "playing");
+    	const nextGameRound = () => {
+    		switch (state) {
+    			case "welcome":
+    				$$invalidate(0, state = "jeopardy");
+    				break;
+    			case "jeopardy":
+    				$$invalidate(0, state = "doubleJeopardy");
+    				break;
+    			case "doubleJeopardy":
+    				$$invalidate(0, state = "finalJeopardy");
+    				break;
+    			case "finalJeopardy":
+    			default:
+    				$$invalidate(0, state = "welcome");
+    		}
+
+    		console.log("next game round", state);
     	};
-
-    	const load_celebs = async () => {
-    		const res = await fetch("https://cameo-explorer.netlify.app/celebs.json");
-    		const data = await res.json();
-    		const lookup = new Map();
-
-    		data.forEach(c => {
-    			lookup.set(c.id, c);
-    		});
-
-    		const subset = new Set();
-
-    		data.forEach(celeb => {
-    			if (celeb.reviews >= 50) {
-    				subset.add(celeb);
-
-    				celeb.similar.forEach(id => {
-    					subset.add(lookup.get(id));
-    				});
-    			}
-    		});
-
-    		return { celebs: Array.from(subset), lookup };
-    	};
-
-    	onMount(() => {
-    		celebs_promise = load_celebs();
-    		load_image("/icons/right.svg");
-    		load_image("/icons/wrong.svg");
-    	});
 
     	const writable_props = [];
 
     	Object.keys($$props).forEach(key => {
-    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<App> was created with unknown prop '${key}'`);
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console_1$1.warn(`<App> was created with unknown prop '${key}'`);
     	});
 
-    	const restart_handler = () => $$invalidate(0, state = "welcome");
-
-    	$$self.$capture_state = () => ({
-    		onMount,
-    		Welcome,
-    		Game,
-    		select,
-    		load_image,
-    		celebs_promise,
-    		state,
-    		selection,
-    		startGame,
-    		load_celebs
-    	});
+    	$$self.$capture_state = () => ({ Welcome, Game, state, nextGameRound });
 
     	$$self.$inject_state = $$props => {
-    		if ("celebs_promise" in $$props) celebs_promise = $$props.celebs_promise;
     		if ("state" in $$props) $$invalidate(0, state = $$props.state);
-    		if ("selection" in $$props) selection = $$props.selection;
     	};
 
     	if ($$props && "$$inject" in $$props) {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	return [state, startGame, restart_handler];
+    	return [state, nextGameRound];
     }
 
     class App extends SvelteComponentDev {

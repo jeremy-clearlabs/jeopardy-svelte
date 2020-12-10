@@ -1,43 +1,27 @@
 <script>
-  import { onMount } from 'svelte';
   import Welcome from './screens/Welcome.svelte';
   import Game from './screens/Game.svelte';
-  import { select } from './select';
-  import { load_image } from './utils.js';
-  let celebs_promise;
-  let state = 'welcome'; // 'welcome' or 'playing'
-  let selection;
-  const startGame = async (e) => {
-    // const { celebs, lookup } = await celebs_promise;
-    // selection = select(celebs, lookup, e.detail.category.slug);
-    state = 'playing';
+
+  // Game State: welcome, jeopardy, doubleJeopardy, finalJeopardy
+  let state = 'welcome';
+
+  const nextGameRound = () => {
+    switch (state) {
+      case 'welcome':
+        state = 'jeopardy';
+        break;
+      case 'jeopardy':
+        state = 'doubleJeopardy';
+        break;
+      case 'doubleJeopardy':
+        state = 'finalJeopardy';
+        break;
+      case 'finalJeopardy':
+      default:
+        state = 'welcome';
+    }
+    console.log('next game round', state);
   };
-  const load_celebs = async () => {
-    const res = await fetch('https://cameo-explorer.netlify.app/celebs.json');
-    const data = await res.json();
-    const lookup = new Map();
-    data.forEach((c) => {
-      lookup.set(c.id, c);
-    });
-    const subset = new Set();
-    data.forEach((celeb) => {
-      if (celeb.reviews >= 50) {
-        subset.add(celeb);
-        celeb.similar.forEach((id) => {
-          subset.add(lookup.get(id));
-        });
-      }
-    });
-    return {
-      celebs: Array.from(subset),
-      lookup,
-    };
-  };
-  onMount(() => {
-    celebs_promise = load_celebs();
-    load_image('/icons/right.svg');
-    load_image('/icons/wrong.svg');
-  });
 </script>
 
 <style>
@@ -56,9 +40,13 @@
 <main>
   {#if state === 'welcome'}
     <article>
-      <Welcome on:start={startGame} />
+      <Welcome on:start={nextGameRound} />
     </article>
-  {:else if state === 'playing'}
-    <Game on:restart={() => (state = 'welcome')} />
+  {:else if state === 'jeopardy'}
+    <Game on:next={nextGameRound} currentRound={state} />
+  {:else if state === 'doubleJeopardy'}
+    <Game on:next={nextGameRound} currentRound={state} />
+  {:else if state === 'finalJeopardy'}
+    <Game on:next={nextGameRound} currentRound={state} />
   {/if}
 </main>

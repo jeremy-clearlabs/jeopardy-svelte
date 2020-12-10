@@ -1,6 +1,5 @@
 <script>
-  import { onMount, afterUpdate } from 'svelte';
-  import { createEventDispatcher } from 'svelte';
+  import { onMount, afterUpdate, createEventDispatcher } from 'svelte';
   import * as eases from 'svelte/easing';
   import { scale } from 'svelte/transition';
   import { quintOut } from 'svelte/easing';
@@ -9,22 +8,17 @@
   import Clue from '../components/Clue.svelte';
   import { gameRound } from '../stores/gameRound.js';
 
+  export let currentRound;
+
+  const dispatch = createEventDispatcher();
+
   let data_promise;
-  // let categories = [];
-  // let clueRows = [];
   let currentClue;
   let currentClueLocation;
   let showSingleClue = false;
-  let gameOver = false;
-
-  const loadGame = async () => {
-    const res = await fetch(`/data.json`);
-    const categories = await res.json();
-    gameRound.initialize(categories);
-    // clueRows = new Array(categories.length).fill().map((_, i) => i);
-  };
 
   onMount(() => {
+    console.log('mount new');
     data_promise = loadGame();
   });
 
@@ -35,10 +29,32 @@
         category.clues.every((clue) => clue.answered)
       )
     ) {
-      gameOver = true;
-      console.log('gameOver', gameOver);
+      roundOver();
     }
   });
+
+  const loadGame = async () => {
+    let gameData;
+    if (currentRound === 'jeopardy') {
+      gameData = '/jeopardy.json';
+    } else if (currentRound === 'doubleJeopardy') {
+      gameData = '/doubleJeopardy.json';
+    } else {
+      gameData = '/finalJeopardy.json';
+    }
+    const res = await fetch(gameData);
+    const categories = await res.json();
+    gameRound.initialize(categories);
+  };
+
+  const roundOver = () => {
+    currentClue = null;
+    currentClueLocation = null;
+    data_promise = null;
+    showSingleClue = false;
+    gameRound.reset();
+    dispatch('next');
+  };
 
   const setCurrentClue = (clue, clueLocation) => {
     currentClue = clue;
@@ -48,16 +64,8 @@
 
   const closeCurrentClue = () => {
     gameRound.setAnswered(currentClueLocation);
-    // const { categoryIndex, clueIndex } = currentClueLocation;
-    // categories[categoryIndex].clues[clueIndex].answered = true;
     showSingleClue = false;
   };
-
-  // const handleKeydown = (event) => {
-  //   console.log('key', event);
-  // };
-
-  // let i = 0;
 </script>
 
 <style>
@@ -95,6 +103,7 @@
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    flex-basis: 0;
   }
 
   .jeopardy-board-category {
