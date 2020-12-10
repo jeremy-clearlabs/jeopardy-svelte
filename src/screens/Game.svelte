@@ -7,6 +7,7 @@
   import Card from '../components/Card.svelte';
   import Clue from '../components/Clue.svelte';
   import { gameRound } from '../stores/gameRound.js';
+  import { scoreBoard } from '../stores/scoreBoard.js';
 
   export let currentRound;
 
@@ -18,7 +19,6 @@
   let showSingleClue = false;
 
   onMount(() => {
-    console.log('mount new');
     data_promise = loadGame();
   });
 

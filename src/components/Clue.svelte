@@ -1,17 +1,55 @@
 <script>
+  import { afterUpdate, onMount } from 'svelte';
+
+  import { scoreBoard } from '../stores/scoreBoard.js';
 
   export let clue;
   export let answer;
+  export let category;
+  export let isDoubleJeopardy;
   export let price;
   export let closeCurrentClue;
+
+  const getCurrentPlayer = () => {
+    return $scoreBoard.find(
+      (playerScoreBoard) => playerScoreBoard.isCurrentPlayer
+    );
+  };
+
+  let currentPlayer = getCurrentPlayer();
   let revealAnswer = false;
+  let timesTried = 0;
+  let tripleStump = false;
+
+  onMount(() => {
+    getCurrentPlayer();
+  });
 
   const handleKeydown = (event) => {
     if (event?.key === 'Escape') {
       closeCurrentClue();
     }
-    if (event?.key === 'a') {
+    if (event?.key === 'r') {
       revealAnswer = true;
+    }
+    if (event?.key === 'n') {
+      scoreBoard.nextCurrentPlayer();
+      currentPlayer = getCurrentPlayer();
+    }
+    if (event?.key === 'w') {
+      scoreBoard.addScore(price);
+      closeCurrentClue();
+    }
+    if (event?.key === 'q') {
+      scoreBoard.removeScore(price);
+      timesTried = timesTried + 1;
+
+      if (timesTried === $scoreBoard.length) {
+        revealAnswer = true;
+      } else {
+        scoreBoard.nextCurrentPlayer();
+        currentPlayer = getCurrentPlayer();
+      }
     }
   };
 </script>
@@ -33,16 +71,56 @@
     font-size: 1.6rem;
     color: #f0f;
   }
+
+  .jeopardy-guide {
+    font-size: 1rem;
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+  }
+
+  .jeopardy-score {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin-bottom: 2rem;
+  }
+  .jeopardy-player-score {
+    font-size: 1.2rem;
+    margin-top: 2rem;
+    display: flex;
+    border: 1px solid var(--jeopardy-blue-dark);
+    padding: 1rem;
+  }
+
+  .jeopardy-player-score--current {
+    border: 1px solid #000;
+  }
 </style>
 
-<div
-  class="jeopardy-clue-wrapper"
-  on:click={() => closeCurrentClue()}
-  >
+<div class="jeopardy-clue-wrapper">
   <div class="jeopardy-clue">{clue}</div>
   {#if revealAnswer}
     <div class="jeopardy-answer">{answer}</div>
   {/if}
+  <div class="jeopardy-score">
+    {#each $scoreBoard as playerBoard}
+      <div
+        class={playerBoard.isCurrentPlayer ? 'jeopardy-player-score jeopardy-player-score--current' : 'jeopardy-player-score'}>
+        <div>
+          {playerBoard.name}: ${Intl.NumberFormat('en-US').format(playerBoard.score)}
+        </div>
+      </div>
+    {/each}
+  </div>
+  <div class="jeopardy-guide">
+    Guide:
+    <div>[r] Reveal answer</div>
+    <div>[w] player wins score</div>
+    <div>[q] player lose score</div>
+    <div>[esc] Close clue</div>
+    <div>[n] Next player</div>
+  </div>
 </div>
 
 <svelte:window on:keydown={handleKeydown} />
