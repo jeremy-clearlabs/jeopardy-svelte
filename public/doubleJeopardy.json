@@ -1,181 +1,241 @@
 [
   {
-    "name": "Actresses",
+    "name": "Famous Bowls",
     "clues": [
       {
-        "price": 100,
-        "clue": "Chrissy Metz' Kate Pearson on this NBC show has inspired many to shrug off body image issues & live their lives",
-        "answer": "This Is Us"
+        "category": "Famous Bowls",
+        "clue": "The Largest Turnout during its 2016 game with Alabama vs. Washington",
+        "answer": "Peach Bowl",
+        "isDoubleJeopardy?": "FALSE",
+        "price": 400
       },
       {
-        "price": 200,
-        "clue": "This woman who grew up in Oxfordshire was bewitching as Meg in \"Little Women\" in 2019",
-        "answer": "Emma Watson"
+        "category": "Famous Bowls",
+        "clue": "The Granddaddy of Them All",
+        "answer": "Rose Bowl",
+        "isDoubleJeopardy?": "FALSE",
+        "price": 800
       },
       {
-        "price": 300,
-        "clue": "In 2005, she won an Emmy playing desperate housewife Lynette Scavo",
-        "answer": "Emma Watson"
+        "category": "Famous Bowls",
+        "clue": "The Red River Showdown",
+        "answer": "Cotton Bowl",
+        "isDoubleJeopardy?": "FALSE",
+        "price": 1200
       },
       {
-        "price": 400,
-        "clue": "Shohreh Aghdashloo had her breakout role opposite Ben Kingsley in 2003's \"House of\" these 2 things",
-        "answer": "Emma Watson"
+        "category": "Famous Bowls",
+        "clue": "Successor to the Festival of Palms Bowl",
+        "answer": "Orange Bowl",
+        "isDoubleJeopardy?": "FALSE",
+        "price": 1600
       },
       {
-        "price": 500,
-        "clue": "This actress is the great-granddaughter of early 20th century British Prime Minister H.H Asquith",
-        "answer": "Emma Watson"
+        "category": "Famous Bowls",
+        "clue": "Sponsored by Playstation",
+        "answer": "Fiesta Bowl",
+        "isDoubleJeopardy?": "FALSE",
+        "price": 2000
       }
     ]
   },
   {
-    "name": "Miscellany",
+    "name": "Under The Petri Dish",
     "clues": [
       {
-        "price": 100,
-        "clue": "The ZIP code 43210 will blast off your mail to this university; go, Buckeyes!",
-        "answer": "This Is Us"
+        "category": "Under The Petri Dish",
+        "clue": "The shortest day of the year",
+        "answer": "Winter's Solstice",
+        "isDoubleJeopardy?": "FALSE",
+        "price": 400
       },
       {
-        "price": 200,
-        "clue": "It was supposedly captured on film in 1934",
-        "answer": "Emma Watson"
+        "category": "Under The Petri Dish",
+        "clue": "They don't fly, but they do float. Their hair traps flys, like a puffy jacket.",
+        "answer": "Reindeer",
+        "isDoubleJeopardy?": "FALSE",
+        "price": 800
       },
       {
-        "price": 300,
-        "clue": "Citizenship Day is celebrated on September 17, the anniversary of the signing of this",
-        "answer": "Emma Watson"
+        "category": "Under The Petri Dish",
+        "clue": "Mistletoe is also known as this kind of schrub",
+        "answer": "Evergreen Shrub",
+        "isDoubleJeopardy?": "FALSE",
+        "price": 1200
       },
       {
-        "price": 400,
-        "clue": "To the surprise of MSNBC viewers, he announced on-air that the March 2, 2020 \"Hardball\" was his last",
-        "answer": "Emma Watson"
+        "category": "Under The Petri Dish",
+        "clue": "The Inventor of Christmas Lights in 1880",
+        "answer": "Thomas Edison",
+        "isDoubleJeopardy?": "FALSE",
+        "price": 1600
       },
       {
-        "price": 500,
-        "clue": "In 1942 the American Birth Control League became this organization",
-        "answer": "Emma Watson"
+        "category": "Under The Petri Dish",
+        "clue": "Native to the Appalachian Mountains, can reach a height of 80 feet and may have trunks as large as 18 inches in diameter",
+        "answer": "Fraser Fir",
+        "isDoubleJeopardy?": "FALSE",
+        "price": 2000
       }
     ]
   },
   {
-    "name": "The Great Lakes",
+    "name": "Bestsellers",
     "clues": [
       {
-        "price": 100,
-        "clue": "Animals of the Great Lakes region include moose, beaver, lynx & this semiaquatic mammal",
-        "answer": "This Is Us"
+        "category": "Bestsellers",
+        "clue": "Recent speeches by this young Swedish climate activist are collected in \"No One Is Too Small to Make a Difference",
+        "answer": "Greta Thunburg",
+        "isDoubleJeopardy?": "FALSE",
+        "price": 400
       },
       {
-        "price": 200,
-        "clue": "The Great Lakes connect directly to the Atlantic Ocean by this river",
-        "answer": "Emma Watson"
+        "category": "Bestsellers",
+        "clue": "The Lost World\" was Michael Crichton's sequel to this bestseller",
+        "answer": "Jurassic Park",
+        "isDoubleJeopardy?": "FALSE",
+        "price": 800
       },
       {
-        "price": 300,
-        "clue": "8 states border a Great Lake, but only this one borders Lake Ontario",
-        "answer": "Emma Watson"
+        "category": "Bestsellers",
+        "clue": "He gave a behind-the-scenes look at his career in \"The Mamba Mentality: How I Play",
+        "answer": "Kobe Bryant",
+        "isDoubleJeopardy?": "FALSE",
+        "price": 1200
       },
       {
-        "price": 400,
-        "clue": "This French explorer with his own lake on the U.S.-Quebec border reached the Great Lakes around 1615",
-        "answer": "Emma Watson"
+        "category": "Bestsellers",
+        "clue": "1986's \"Red Storm Rising\" was his second novel & his second No. 1 bestseller",
+        "answer": "Tom Clancy",
+        "isDoubleJeopardy?": "FALSE",
+        "price": 1600
       },
       {
-        "price": 500,
-        "clue": "These straits connect Lake Michigan & Lake Huron, technically making those 2 one large continuous lake",
-        "answer": "Emma Watson"
+        "category": "Bestsellers",
+        "clue": "In the '90s this newsman had a nonfiction bestseller with \"The Greatest Generation\" about the men & women of WWII",
+        "answer": "Tom Brokow",
+        "isDoubleJeopardy?": "FALSE",
+        "price": 2000
       }
     ]
   },
   {
-    "name": "Mining",
+    "name": "Math Words",
     "clues": [
       {
-        "price": 100,
-        "clue": "In operation from 1910 to 1983, a mine under Detroit for this ice-melting stuff was reopened in 1998",
-        "answer": "This Is Us"
+        "category": "Math Words",
+        "clue": "P: Scheme up this figure with a polygon for a base & triangles with a common vertex for faces",
+        "answer": "a pyramid",
+        "isDoubleJeopardy?": "FALSE",
+        "price": 400
       },
       {
-        "price": 200,
-        "clue": "Also a sewing term, it's a bed or stratum of coal; Wyoming has some that are 250 feet wide",
-        "answer": "Emma Watson"
+        "category": "Math Words",
+        "clue": "E: It's a closed, oval-shaped curve",
+        "answer": "an ellipse",
+        "isDoubleJeopardy?": "FALSE",
+        "price": 800
       },
       {
-        "price": 300,
-        "clue": "Mining this precious metal discovered there in 1865 made Belmont, Nevada a boomtown until the 1880s",
-        "answer": "Emma Watson"
+        "category": "Math Words",
+        "clue": "A: 2 angles that share a vertex & a side are this, like neighboring lots",
+        "answer": "adjacent",
+        "isDoubleJeopardy?": "FALSE",
+        "price": 1200
       },
       {
-        "price": 400,
-        "clue": "A 1778 treatise on mining says a gad is a wedge between rocks to loosen the ground for this long-handled pointy-ended tool",
-        "answer": "Emma Watson"
+        "category": "Math Words",
+        "clue": "R: A multiplicative inverse",
+        "answer": "a reciprocal",
+        "isDoubleJeopardy?": "FALSE",
+        "price": 1600
       },
       {
-        "price": 500,
-        "clue": "Barney Barnato, one of the 19th century's \"Randlords\", made his fortune in the 1870s mining these",
-        "answer": "Emma Watson"
+        "category": "Math Words",
+        "clue": "O.P: 2 numbers whose position is important, so (X,Y) is different than (Y,X)",
+        "answer": "an ordered pair",
+        "isDoubleJeopardy?": "FALSE",
+        "price": 2000
       }
     ]
   },
   {
-    "name": "It Came To Them In A Dream",
+    "name": "Cybersecurity",
     "clues": [
       {
-        "price": 100,
-        "clue": "This Beatle woke up with the tune for \"Yesterday\" in his head, but \"I couldn't have written it because I just dreamed it",
-        "answer": "This Is Us"
+        "category": "Cybersecurity",
+        "clue": "This type of hacker referred to by a colorful bit of headwear helpfully tests computer systems for vulnerability",
+        "answer": "white-hat",
+        "isDoubleJeopardy?": "FALSE",
+        "price": 400
       },
       {
-        "price": 200,
-        "clue": "This director created \"The Terminator\" after a nightmare about a metallic figure emerging from a fire",
-        "answer": "Emma Watson"
+        "category": "Cybersecurity",
+        "clue": "A website with a site certificate is one that uses encryption; this letter after http is one sign of it",
+        "answer": "s",
+        "isDoubleJeopardy?": "FALSE",
+        "price": 800
       },
       {
-        "price": 300,
-        "clue": "This \"Golden Bear\" turned around his golf game by using a new grip the way he did in a dream",
-        "answer": "Emma Watson"
+        "category": "Cybersecurity",
+        "clue": "Companies consider cybersecurity when instructing employees with a policy on BYOD, short for this",
+        "answer": "bring your own device",
+        "isDoubleJeopardy?": "FALSE",
+        "price": 1200
       },
       {
-        "price": 400,
-        "clue": "After a feverish nightmare about cannibals, Elias Howe is said to have had a breakthrough in his invention of this device",
-        "answer": "Emma Watson"
+        "category": "Cybersecurity",
+        "clue": "A ransomware attack that encrypted 3,800 City of Atlanta computers demanded 6 of these digital items to unfreeze them",
+        "answer": "bitcoins",
+        "isDoubleJeopardy?": "FALSE",
+        "price": 1600
       },
       {
-        "price": 500,
-        "clue": "This woman dreamed a \"pale student of unhallowed arts kneeling beside the thing he had put together\" & a novel was born",
-        "answer": "Emma Watson"
+        "category": "Cybersecurity",
+        "clue": "Beware of these types of programs that track every stroke you make while typing in an effort to glean your password",
+        "answer": "keylogging programs",
+        "isDoubleJeopardy?": "FALSE",
+        "price": 2000
       }
     ]
   },
   {
-    "name": "Smart Answers",
+    "name": "Psychology",
     "clues": [
       {
-        "price": 100,
-        "clue": "Adjective for a blade that has just been honed",
-        "answer": "This Is Us"
+        "category": "Psychology",
+        "clue": "He coined the term \"psychoanalysis",
+        "answer": "Sigmund Freud",
+        "isDoubleJeopardy?": "FALSE",
+        "price": 400
       },
       {
-        "price": 200,
-        "clue": "Homo sapiens means \"man the\" this 4-letter word",
-        "answer": "Emma Watson"
+        "category": "Psychology",
+        "clue": "The Penguin Dict. of Psychology says, \"An intense dialogue about the wallpaper\" would do as well as this inkblot test",
+        "answer": "The Rorschach Test",
+        "isDoubleJeopardy?": "FALSE",
+        "price": 800
       },
       {
-        "price": 300,
-        "clue": "Preceded by \"un\", it means mysterious; we want the 5-letter version meaning clever",
-        "answer": "Emma Watson"
+        "category": "Psychology",
+        "clue": "In an unsettling experiment, I test a device that simulates hearing voices in your head, a symptom of this mental disorder",
+        "answer": "schizophrenia",
+        "isDoubleJeopardy?": "FALSE",
+        "price": 1200
       },
       {
-        "price": 400,
-        "clue": "A particular skill or aptitude, or a person with an I.Q. higher than 150",
-        "answer": "Emma Watson"
+        "category": "Psychology",
+        "clue": "This Swiss mister came up with concepts like the collective unconscious & archetypes",
+        "answer": "Carl Jung",
+        "isDoubleJeopardy?": "FALSE",
+        "price": 1600
       },
       {
-        "price": 500,
-        "clue": "Cervelle au beurre noisette is this French dish, served in butter",
-        "answer": "Emma Watson"
+        "category": "Psychology",
+        "clue": "Ivan Pavlov training dogs to salivate when a bell rings is an example of this classic type of reflex or response",
+        "answer": "classical conditioning",
+        "isDoubleJeopardy?": "FALSE",
+        "price": 2000
       }
     ]
   }

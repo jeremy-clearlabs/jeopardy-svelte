@@ -1,181 +1,241 @@
 [
   {
-    "name": "Actresses",
+    "name": "Holly Jolly Christmas",
     "clues": [
       {
-        "price": 100,
-        "clue": "Chrissy Metz' Kate Pearson on this NBC show has inspired many to shrug off body image issues & live their lives",
-        "answer": "This Is Us"
+        "category": "Holly Jolly Christmas",
+        "clue": "This is the century when the term \"X-mas\" was invented",
+        "answer": "16th, by the Greeks",
+        "isDoubleJeopardy?": false,
+        "price": 200
       },
       {
-        "price": 200,
-        "clue": "This woman who grew up in Oxfordshire was bewitching as Meg in \"Little Women\" in 2019",
-        "answer": "Emma Watson"
+        "category": "Holly Jolly Christmas",
+        "clue": "The country started the tradition of putting up the Christmas tree",
+        "answer": "Germany",
+        "isDoubleJeopardy?": false,
+        "price": 400
       },
       {
-        "price": 300,
-        "clue": "In 2005, she won an Emmy playing desperate housewife Lynette Scavo",
-        "answer": "Emma Watson"
+        "category": "Holly Jolly Christmas",
+        "clue": "This holiday was \"Jingle Bells\" originally written for",
+        "answer": "Thanksgiving",
+        "isDoubleJeopardy?": false,
+        "price": 600
       },
       {
-        "price": 400,
-        "clue": "Shohreh Aghdashloo had her breakout role opposite Ben Kingsley in 2003's \"House of\" these 2 things",
-        "answer": "Emma Watson"
+        "category": "Holly Jolly Christmas",
+        "clue": "This author wrote \"Christmas doesn't come from a store, maybe Christmas perhaps means a little bit more?",
+        "answer": "Dr. Seuss",
+        "isDoubleJeopardy?": false,
+        "price": 800
       },
       {
-        "price": 500,
-        "clue": "This actress is the great-granddaughter of early 20th century British Prime Minister H.H Asquith",
-        "answer": "Emma Watson"
+        "category": "Holly Jolly Christmas",
+        "clue": "What are Christmas trees also called?",
+        "answer": "Yule-tree",
+        "isDoubleJeopardy?": false,
+        "price": 1000
       }
     ]
   },
   {
-    "name": "Miscellany",
+    "name": "Holiday Film Past",
     "clues": [
       {
-        "price": 100,
-        "clue": "The ZIP code 43210 will blast off your mail to this university; go, Buckeyes!",
-        "answer": "This Is Us"
+        "category": "Holiday Film Past",
+        "clue": "Every time a bell rang in \"It's a Wonderful Life",
+        "answer": "An angel got its wings",
+        "isDoubleJeopardy?": false,
+        "price": 200
       },
       {
-        "price": 200,
-        "clue": "It was supposedly captured on film in 1934",
-        "answer": "Emma Watson"
+        "category": "Holiday Film Past",
+        "clue": "The first rule of the code of elves from the movie \"Elf",
+        "answer": "Treat everyday like Christmas",
+        "isDoubleJeopardy?": false,
+        "price": 400
       },
       {
-        "price": 300,
-        "clue": "Citizenship Day is celebrated on September 17, the anniversary of the signing of this",
-        "answer": "Emma Watson"
+        "category": "Holiday Film Past",
+        "clue": "This is the real-life department store depicted in The movie Miracle on 34th Street",
+        "answer": "Macy's",
+        "isDoubleJeopardy?": false,
+        "price": 600
       },
       {
-        "price": 400,
-        "clue": "To the surprise of MSNBC viewers, he announced on-air that the March 2, 2020 \"Hardball\" was his last",
-        "answer": "Emma Watson"
+        "category": "Holiday Film Past",
+        "clue": "This Hollywood actor played six different roles in the Polar Express",
+        "answer": "Tom Hanks",
+        "isDoubleJeopardy?": false,
+        "price": 800
       },
       {
-        "price": 500,
-        "clue": "In 1942 the American Birth Control League became this organization",
-        "answer": "Emma Watson"
+        "category": "Holiday Film Past",
+        "clue": "This film takes place at the Nakatomi Plaza",
+        "answer": "Die Hard",
+        "isDoubleJeopardy?": false,
+        "price": 1000
       }
     ]
   },
   {
-    "name": "The Great Lakes",
+    "name": "Life of Alex Trebek",
     "clues": [
       {
-        "price": 100,
-        "clue": "Animals of the Great Lakes region include moose, beaver, lynx & this semiaquatic mammal",
-        "answer": "This Is Us"
+        "category": "Life of Alex Trebek",
+        "clue": "The province of Canada Alek Trebek is from",
+        "answer": "Ontario",
+        "isDoubleJeopardy?": false,
+        "price": 200
       },
       {
-        "price": 200,
-        "clue": "The Great Lakes connect directly to the Atlantic Ocean by this river",
-        "answer": "Emma Watson"
+        "category": "Life of Alex Trebek",
+        "clue": "The broadcasting channel Alex Trebek's first job was at",
+        "answer": "CBC",
+        "isDoubleJeopardy?": false,
+        "price": 400
       },
       {
-        "price": 300,
-        "clue": "8 states border a Great Lake, but only this one borders Lake Ontario",
-        "answer": "Emma Watson"
+        "category": "Life of Alex Trebek",
+        "clue": "Trebek's favorite non-alcoholic drink",
+        "answer": "Low-fat Milk",
+        "isDoubleJeopardy?": false,
+        "price": 600
       },
       {
-        "price": 400,
-        "clue": "This French explorer with his own lake on the U.S.-Quebec border reached the Great Lakes around 1615",
-        "answer": "Emma Watson"
+        "category": "Life of Alex Trebek",
+        "clue": "This is the university that has the \"Alex Trebek Alumni Hall",
+        "answer": "University of Ottawa",
+        "isDoubleJeopardy?": false,
+        "price": 800
       },
       {
-        "price": 500,
-        "clue": "These straits connect Lake Michigan & Lake Huron, technically making those 2 one large continuous lake",
-        "answer": "Emma Watson"
+        "category": "Life of Alex Trebek",
+        "clue": "Alek Trebek's soulmate",
+        "answer": "Jean Trebek",
+        "isDoubleJeopardy?": false,
+        "price": 1000
       }
     ]
   },
   {
-    "name": "Mining",
+    "name": "All I Want For Christmas",
     "clues": [
       {
-        "price": 100,
-        "clue": "In operation from 1910 to 1983, a mine under Detroit for this ice-melting stuff was reopened in 1998",
-        "answer": "This Is Us"
+        "category": "All I Want For Christmas",
+        "clue": "Last Christmas, I gave you my heart\nBut the very next day, you gave it away",
+        "answer": "Wham!",
+        "isDoubleJeopardy?": false,
+        "price": 200
       },
       {
-        "price": 200,
-        "clue": "Also a sewing term, it's a bed or stratum of coal; Wyoming has some that are 250 feet wide",
-        "answer": "Emma Watson"
+        "category": "All I Want For Christmas",
+        "clue": "Simply having a wonderful Christmastime",
+        "answer": "Paul McCartney",
+        "isDoubleJeopardy?": false,
+        "price": 400
       },
       {
-        "price": 300,
-        "clue": "Mining this precious metal discovered there in 1865 made Belmont, Nevada a boomtown until the 1880s",
-        "answer": "Emma Watson"
+        "category": "All I Want For Christmas",
+        "clue": "Feliz Navidad\nPróspero año y felicidad",
+        "answer": "José Feliciano",
+        "isDoubleJeopardy?": false,
+        "price": 600
       },
       {
-        "price": 400,
-        "clue": "A 1778 treatise on mining says a gad is a wedge between rocks to loosen the ground for this long-handled pointy-ended tool",
-        "answer": "Emma Watson"
+        "category": "All I Want For Christmas",
+        "clue": "You're all that I need\nUnderneath the tree",
+        "answer": "Kelly Clarkson",
+        "isDoubleJeopardy?": false,
+        "price": 800
       },
       {
-        "price": 500,
-        "clue": "Barney Barnato, one of the 19th century's \"Randlords\", made his fortune in the 1870s mining these",
-        "answer": "Emma Watson"
+        "category": "All I Want For Christmas",
+        "clue": "Lord it's like a hard candy christmas\nI'm barely getting through tomorrow",
+        "answer": "Dolly Parton",
+        "isDoubleJeopardy?": false,
+        "price": 1000
       }
     ]
   },
   {
-    "name": "It Came To Them In A Dream",
+    "name": "Hindsight is 2020",
     "clues": [
       {
-        "price": 100,
-        "clue": "This Beatle woke up with the tune for \"Yesterday\" in his head, but \"I couldn't have written it because I just dreamed it",
-        "answer": "This Is Us"
+        "category": "Hindsight is 2020",
+        "clue": "An officer pressed his knee on his neck for over eight minutes",
+        "answer": "George Floyd",
+        "isDoubleJeopardy?": false,
+        "price": 200
       },
       {
-        "price": 200,
-        "clue": "This director created \"The Terminator\" after a nightmare about a metallic figure emerging from a fire",
-        "answer": "Emma Watson"
+        "category": "Hindsight is 2020",
+        "clue": "This city's port where a major explosion by the accidental detonation of 2,750 tons of ammonium nitrate",
+        "answer": "Beirut",
+        "isDoubleJeopardy?": false,
+        "price": 400
       },
       {
-        "price": 300,
-        "clue": "This \"Golden Bear\" turned around his golf game by using a new grip the way he did in a dream",
-        "answer": "Emma Watson"
+        "category": "Hindsight is 2020",
+        "clue": "This organization declared the pandemic on March 11th, 2020",
+        "answer": "WHO",
+        "isDoubleJeopardy?": false,
+        "price": 600
       },
       {
-        "price": 400,
-        "clue": "After a feverish nightmare about cannibals, Elias Howe is said to have had a breakthrough in his invention of this device",
-        "answer": "Emma Watson"
+        "category": "Hindsight is 2020",
+        "clue": "The the largest fire in California state history",
+        "answer": "The August Complex fire",
+        "isDoubleJeopardy?": false,
+        "price": 800
       },
       {
-        "price": 500,
-        "clue": "This woman dreamed a \"pale student of unhallowed arts kneeling beside the thing he had put together\" & a novel was born",
-        "answer": "Emma Watson"
+        "category": "Hindsight is 2020",
+        "clue": "His body was carried across the Edmund Pettus Bridge in Selma, Ala.",
+        "answer": "John Lewis",
+        "isDoubleJeopardy?": false,
+        "price": 1000
       }
     ]
   },
   {
-    "name": "Smart Answers",
+    "name": "All-American Food",
     "clues": [
       {
-        "price": 100,
-        "clue": "Adjective for a blade that has just been honed",
-        "answer": "This Is Us"
+        "category": "All-American Food",
+        "clue": "On Fridays many people like to chow down on this thick, creamy style of clam chowder",
+        "answer": "New England clam chowder",
+        "isDoubleJeopardy?": false,
+        "price": 200
       },
       {
-        "price": 200,
-        "clue": "Homo sapiens means \"man the\" this 4-letter word",
-        "answer": "Emma Watson"
+        "category": "All-American Food",
+        "clue": "This spicy poultry appetizer is popularly served with blue-cheese dressing & celery sticks",
+        "answer": "Buffalo Wings",
+        "isDoubleJeopardy?": false,
+        "price": 400
       },
       {
-        "price": 300,
-        "clue": "Preceded by \"un\", it means mysterious; we want the 5-letter version meaning clever",
-        "answer": "Emma Watson"
+        "category": "All-American Food",
+        "clue": "Some credit a Delmonico's chef with cooking up this dessert of ice cream covered in meringue & browned",
+        "answer": "Baked Alaska",
+        "isDoubleJeopardy?": false,
+        "price": 600
       },
       {
-        "price": 400,
-        "clue": "A particular skill or aptitude, or a person with an I.Q. higher than 150",
-        "answer": "Emma Watson"
+        "category": "All-American Food",
+        "clue": "Named for the city of its birth, deep-dish or pan pizza is also called this",
+        "answer": "Chicago-style pizza",
+        "isDoubleJeopardy?": false,
+        "price": 800
       },
       {
-        "price": 500,
-        "clue": "Cervelle au beurre noisette is this French dish, served in butter",
-        "answer": "Emma Watson"
+        "category": "All-American Food",
+        "clue": "Your first taste of sushi might be this dish containing avocado, crab meat & cucumber",
+        "answer": "California roll",
+        "isDoubleJeopardy?": false,
+        "price": 1000
       }
     ]
   }
