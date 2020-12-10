@@ -1,6 +1,7 @@
 <script>
   import Welcome from './screens/Welcome.svelte';
   import Game from './screens/Game.svelte';
+  import FinalGame from './screens/FinalGame.svelte';
 
   // Game State: welcome, jeopardy, doubleJeopardy, finalJeopardy
   let state = 'welcome';
@@ -47,6 +48,6 @@
   {:else if state === 'doubleJeopardy'}
     <Game on:next={nextGameRound} currentRound={state} />
   {:else if state === 'finalJeopardy'}
-    <Game on:next={nextGameRound} currentRound={state} />
+    <FinalGame on:next={nextGameRound} currentRound={state} />
   {/if}
 </main>
