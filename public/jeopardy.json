@@ -1,119 +1,119 @@
 [
   {
-    "name": "Holly Jolly Christmas",
+    "name": "Team Names",
     "clues": [
       {
-        "category": "Holly Jolly Christmas",
-        "clue": "This is the century when the term \"X-mas\" was invented",
-        "answer": "16th, by the Greeks",
+        "category": "Team Names",
+        "clue": "This is Jag's first name",
+        "answer": "Jagadeeswari",
         "isDoubleJeopardy?": false,
         "price": 200
       },
       {
-        "category": "Holly Jolly Christmas",
-        "clue": "The country started the tradition of putting up the Christmas tree",
-        "answer": "Germany",
+        "category": "Team Names",
+        "clue": "The other Henrik had this name",
+        "answer": "Swedish Henrik",
         "isDoubleJeopardy?": false,
         "price": 400
       },
       {
-        "category": "Holly Jolly Christmas",
-        "clue": "This holiday was \"Jingle Bells\" originally written for",
-        "answer": "Thanksgiving",
+        "category": "Team Names",
+        "clue": "Henrik on slack",
+        "answer": "@gman",
         "isDoubleJeopardy?": false,
         "price": 600
       },
       {
-        "category": "Holly Jolly Christmas",
-        "clue": "This author wrote \"Christmas doesn't come from a store, maybe Christmas perhaps means a little bit more?",
-        "answer": "Dr. Seuss",
+        "category": "Team Names",
+        "clue": "This original candy snack shares the same name as this team member",
+        "answer": "Werther",
         "isDoubleJeopardy?": false,
         "price": 800
       },
       {
-        "category": "Holly Jolly Christmas",
-        "clue": "What are Christmas trees also called?",
-        "answer": "Yule-tree",
+        "category": "Team Names",
+        "clue": "These two team members share the same initials",
+        "answer": "Marlone and Mathias",
         "isDoubleJeopardy?": false,
         "price": 1000
       }
     ]
   },
   {
-    "name": "Holiday Film Past",
+    "name": "Know Your Microservices",
     "clues": [
       {
-        "category": "Holiday Film Past",
-        "clue": "Every time a bell rang in \"It's a Wonderful Life",
-        "answer": "An angel got its wings",
+        "category": "Know Your Microservices",
+        "clue": "Utilizes Big Query",
+        "answer": "AIR",
         "isDoubleJeopardy?": false,
         "price": 200
       },
       {
-        "category": "Holiday Film Past",
-        "clue": "The first rule of the code of elves from the movie \"Elf",
-        "answer": "Treat everyday like Christmas",
+        "category": "Know Your Microservices",
+        "clue": "Lineages upon sublineages",
+        "answer": "Taxonomy Management",
         "isDoubleJeopardy?": false,
         "price": 400
       },
       {
-        "category": "Holiday Film Past",
-        "clue": "This is the real-life department store depicted in The movie Miracle on 34th Street",
-        "answer": "Macy's",
+        "category": "Know Your Microservices",
+        "clue": "Log me in",
+        "answer": "User Management",
         "isDoubleJeopardy?": false,
         "price": 600
       },
       {
-        "category": "Holiday Film Past",
-        "clue": "This Hollywood actor played six different roles in the Polar Express",
-        "answer": "Tom Hanks",
+        "category": "Know Your Microservices",
+        "clue": "Avatars, CSVs, and compressed FASTAs",
+        "answer": "File Management",
         "isDoubleJeopardy?": false,
         "price": 800
       },
       {
-        "category": "Holiday Film Past",
-        "clue": "This film takes place at the Nakatomi Plaza",
-        "answer": "Die Hard",
+        "category": "Know Your Microservices",
+        "clue": "Stores this entity within Floors within Buildings",
+        "answer": "Sample Site",
         "isDoubleJeopardy?": false,
         "price": 1000
       }
     ]
   },
   {
-    "name": "Life of Alex Trebek",
+    "name": "document.title",
     "clues": [
       {
-        "category": "Life of Alex Trebek",
-        "clue": "The province of Canada Alek Trebek is from",
-        "answer": "Ontario",
+        "category": "document.title",
+        "clue": "Clear Safety, Clear Dx, and Clear Dx WGS Apps share this same document title",
+        "answer": "Clear View",
         "isDoubleJeopardy?": false,
         "price": 200
       },
       {
-        "category": "Life of Alex Trebek",
-        "clue": "The broadcasting channel Alex Trebek's first job was at",
-        "answer": "CBC",
+        "category": "document.title",
+        "clue": "Software Developer and Collaboration Tools",
+        "answer": "Atlassian",
         "isDoubleJeopardy?": false,
         "price": 400
       },
       {
-        "category": "Life of Alex Trebek",
-        "clue": "Trebek's favorite non-alcoholic drink",
+        "category": "document.title",
+        "clue": "The collaborative interface design tool",
         "answer": "Low-fat Milk",
         "isDoubleJeopardy?": false,
         "price": 600
       },
       {
-        "category": "Life of Alex Trebek",
-        "clue": "This is the university that has the \"Alex Trebek Alumni Hall",
-        "answer": "University of Ottawa",
+        "category": "document.title",
+        "clue": "Cloud Storage for Work and Home",
+        "answer": "Google Drive",
         "isDoubleJeopardy?": false,
         "price": 800
       },
       {
-        "category": "Life of Alex Trebek",
-        "clue": "Alek Trebek's soulmate",
-        "answer": "Jean Trebek",
+        "category": "document.title",
+        "clue": "Where Developers Learn, Share, and Build Careers",
+        "answer": "Stack Overflow",
         "isDoubleJeopardy?": false,
         "price": 1000
       }
