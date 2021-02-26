@@ -80,40 +80,40 @@
     ]
   },
   {
-    "name": "Public Health Labs",
+    "name": "Slack Channels",
     "clues": [
       {
-        "category": "Public Health Labs",
-        "clue": "Recent speeches by this young Swedish climate activist are collected in \"No One Is Too Small to Make a Difference",
-        "answer": "Greta Thunburg",
+        "category": "Slack Channels",
+        "clue": "For all team updates",
+        "answer": "#engineering",
         "isDoubleJeopardy?": "FALSE",
         "price": 400
       },
       {
-        "category": "Public Health Labs",
-        "clue": "The Lost World\" was Michael Crichton's sequel to this bestseller",
-        "answer": "Jurassic Park",
+        "category": "Slack Channels",
+        "clue": "Forward a question to Kyle",
+        "answer": "#product",
         "isDoubleJeopardy?": "FALSE",
         "price": 800
       },
       {
-        "category": "Public Health Labs",
-        "clue": "He gave a behind-the-scenes look at his career in \"The Mamba Mentality: How I Play",
-        "answer": "Kobe Bryant",
+        "category": "Slack Channels",
+        "clue": "Matt!!!!!!!",
+        "answer": "#it",
         "isDoubleJeopardy?": "FALSE",
         "price": 1200
       },
       {
-        "category": "Public Health Labs",
-        "clue": "1986's \"Red Storm Rising\" was his second novel & his second No. 1 bestseller",
-        "answer": "Tom Clancy",
+        "category": "Slack Channels",
+        "clue": "Are we ready for a new version?",
+        "answer": "#deployments",
         "isDoubleJeopardy?": "FALSE",
         "price": 1600
       },
       {
-        "category": "Public Health Labs",
-        "clue": "In the '90s this newsman had a nonfiction bestseller with \"The Greatest Generation\" about the men & women of WWII",
-        "answer": "Tom Brokow",
+        "category": "Slack Channels",
+        "clue": "The Datadog dedicated channel",
+        "answer": "#monitoring-alerts",
         "isDoubleJeopardy?": "FALSE",
         "price": 2000
       }
