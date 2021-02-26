@@ -120,120 +120,120 @@
     ]
   },
   {
-    "name": "All I Want For Christmas",
+    "name": "Q is for Quality",
     "clues": [
       {
-        "category": "All I Want For Christmas",
-        "clue": "Last Christmas, I gave you my heart\nBut the very next day, you gave it away",
-        "answer": "Wham!",
+        "category": "Q is for Quality",
+        "clue": "Test suite to ensue all features that were working before continue to work",
+        "answer": "Regression",
         "isDoubleJeopardy?": false,
         "price": 200
       },
       {
-        "category": "All I Want For Christmas",
-        "clue": "Simply having a wonderful Christmastime",
-        "answer": "Paul McCartney",
+        "category": "Q is for Quality",
+        "clue": "How much could the system handle?",
+        "answer": "Load Testing",
         "isDoubleJeopardy?": false,
         "price": 400
       },
       {
-        "category": "All I Want For Christmas",
-        "clue": "Feliz Navidad\nPróspero año y felicidad",
-        "answer": "José Feliciano",
+        "category": "Q is for Quality",
+        "clue": "Step before releasing a new version",
+        "answer": "Sign-off",
         "isDoubleJeopardy?": false,
         "price": 600
       },
       {
-        "category": "All I Want For Christmas",
-        "clue": "You're all that I need\nUnderneath the tree",
-        "answer": "Kelly Clarkson",
+        "category": "Q is for Quality",
+        "clue": "Opposite of Manual Testing",
+        "answer": "Automation Testing",
         "isDoubleJeopardy?": false,
         "price": 800
       },
       {
-        "category": "All I Want For Christmas",
-        "clue": "Lord it's like a hard candy christmas\nI'm barely getting through tomorrow",
-        "answer": "Dolly Parton",
+        "category": "Q is for Quality",
+        "clue": "Admiral Grace Hopper logged the first one when she found it trapped inside the machine",
+        "answer": "Bug",
         "isDoubleJeopardy?": false,
         "price": 1000
       }
     ]
   },
   {
-    "name": "Hindsight is 2020",
+    "name": "Breaches, Hacks, and Scams",
     "clues": [
       {
-        "category": "Hindsight is 2020",
-        "clue": "An officer pressed his knee on his neck for over eight minutes",
-        "answer": "George Floyd",
+        "category": "Breaches, Hacks, and Scams",
+        "clue": "Hackers publicly expose personal or sensitive information",
+        "answer": "Data Leak",
         "isDoubleJeopardy?": false,
         "price": 200
       },
       {
-        "category": "Hindsight is 2020",
-        "clue": "This city's port where a major explosion by the accidental detonation of 2,750 tons of ammonium nitrate",
-        "answer": "Beirut",
+        "category": "Breaches, Hacks, and Scams",
+        "clue": "\"The Prince of Nigeria needs your help\" request",
+        "answer": "Advanced-Fee",
         "isDoubleJeopardy?": false,
         "price": 400
       },
       {
-        "category": "Hindsight is 2020",
-        "clue": "This organization declared the pandemic on March 11th, 2020",
-        "answer": "WHO",
+        "category": "Breaches, Hacks, and Scams",
+        "clue": "Executes query from user input",
+        "answer": "SQL Injection",
         "isDoubleJeopardy?": false,
         "price": 600
       },
       {
-        "category": "Hindsight is 2020",
-        "clue": "The the largest fire in California state history",
-        "answer": "The August Complex fire",
+        "category": "Breaches, Hacks, and Scams",
+        "clue": "Masks their phone number to appear in your same area code",
+        "answer": "Robocalls",
         "isDoubleJeopardy?": false,
         "price": 800
       },
       {
-        "category": "Hindsight is 2020",
-        "clue": "His body was carried across the Edmund Pettus Bridge in Selma, Ala.",
-        "answer": "John Lewis",
+        "category": "Breaches, Hacks, and Scams",
+        "clue": "Giving sensitive information to an attacker under false pretenses",
+        "answer": "Phishing",
         "isDoubleJeopardy?": false,
         "price": 1000
       }
     ]
   },
   {
-    "name": "All-American Food",
+    "name": "Engineering Weekly",
     "clues": [
       {
-        "category": "All-American Food",
-        "clue": "On Fridays many people like to chow down on this thick, creamy style of clam chowder",
-        "answer": "New England clam chowder",
+        "category": "Engineering Weekly",
+        "clue": "Still paying attention? This is an overview of planned work",
+        "answer": "Roadmap",
         "isDoubleJeopardy?": false,
         "price": 200
       },
       {
-        "category": "All-American Food",
-        "clue": "This spicy poultry appetizer is popularly served with blue-cheese dressing & celery sticks",
-        "answer": "Buffalo Wings",
+        "category": "Engineering Weekly",
+        "clue": "A new addition with our CLIA",
+        "answer": "CLIMS Integration",
         "isDoubleJeopardy?": false,
         "price": 400
       },
       {
-        "category": "All-American Food",
-        "clue": "Some credit a Delmonico's chef with cooking up this dessert of ice cream covered in meringue & browned",
-        "answer": "Baked Alaska",
+        "category": "Engineering Weekly",
+        "clue": "The one dedicated for Kalidas",
+        "answer": "DevOps",
         "isDoubleJeopardy?": false,
         "price": 600
       },
       {
-        "category": "All-American Food",
-        "clue": "Named for the city of its birth, deep-dish or pan pizza is also called this",
-        "answer": "Chicago-style pizza",
+        "category": "Engineering Weekly",
+        "clue": "Where you can find the bug stats",
+        "answer": "Quality",
         "isDoubleJeopardy?": false,
         "price": 800
       },
       {
-        "category": "All-American Food",
-        "clue": "Your first taste of sushi might be this dish containing avocado, crab meat & cucumber",
-        "answer": "California roll",
+        "category": "Engineering Weekly",
+        "clue": "This slide shows the TS Tickets",
+        "answer": "Customer Issues",
         "isDoubleJeopardy?": false,
         "price": 1000
       }
